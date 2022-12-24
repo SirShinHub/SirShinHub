@@ -79,7 +79,7 @@ StarterGui:SetCore(
     "SendNotification",
     {
         Title = "Warning",
-        Text = "RightControl to toggle if the gui does not show up then the game is not supported please try again later or never if the game is supported the gui will pop up reguardless GOOD DAY!",
+        Text = "RightControl to toggle GUI",
         Duration = 15
     }
 )
@@ -87,7 +87,7 @@ StarterGui:SetCore(
     "SendNotification",
     {
         Title = "Credis",
-        Text = "CharWar Serverhops Toxic Mods screen thingy And Kiriot22 esp,IY for fly script inspiration,Staylin Save Settings,Felix for being sexy, E621 Anticheat bypasses"
+        Text = "Shin Editor"
     }
 )
 wait(5)
