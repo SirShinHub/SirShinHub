@@ -58,7 +58,7 @@ local queue_on_teleport =
     syn and
         syn.queue_on_teleport [[
        repeat wait() until game:IsLoaded() wait(5) print("ServerHoped or rejoined")
-       loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/littlegui/main/V.G-Hubs-Source'))()]]
+       loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/V.G-Hub.lua'))()]]
 
 for i, v in pairs(Games) do
     if i == game.PlaceId then
