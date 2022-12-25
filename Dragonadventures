@@ -19,8 +19,8 @@ local spawn = task.spawn
 
 
 local Config = {
-    WindowName = "V.G Hub",
-    Color = Color3.fromRGB(255, 128, 64),
+    WindowName = "SIRSHIN HUB",
+    Color = Color3.fromRGB(40, 127, 71),
     Keybind = Enum.KeyCode.RightControl
 }
 
@@ -32,6 +32,27 @@ Player.Idled:connect(
 repeat
     wait()
 until Player.Character
+
+local Name = "Dragon-Adventures.txt"
+
+Des = {}
+if makefolder then
+    makefolder("SIRSHIN HUB")
+end
+
+local Settings
+
+if
+    not pcall(
+        function()
+            readfile("SIRSHIN HUB//" .. Name)
+        end
+    )
+ then
+    writefile("SIRSHIN HUB//" .. Name, HttpService:JSONEncode(Des))
+end
+
+Settings = HttpService:JSONDecode(readfile("SIRSHIN HUB//" .. Name))
 
 Player.PlayerGui.NodeGui.BoostFrame.ChildAdded:Connect(
     function(v)
