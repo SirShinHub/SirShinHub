@@ -33,31 +33,6 @@ repeat
     wait()
 until Player.Character
 
-local Name = "Dragon-Adventures.txt"
-
-Des = {}
-if makefolder then
-    makefolder("V.G Hub")
-end
-
-local Settings
-
-if
-    not pcall(
-        function()
-            readfile("V.G Hub//" .. Name)
-        end
-    )
- then
-    writefile("V.G Hub//" .. Name, HttpService:JSONEncode(Des))
-end
-
-Settings = HttpService:JSONDecode(readfile("V.G Hub//" .. Name))
-
-local function Save()
-    writefile("V.G Hub//" .. Name, HttpService:JSONEncode(Settings))
-end
-
 Player.PlayerGui.NodeGui.BoostFrame.ChildAdded:Connect(
     function(v)
         if v.ClassName == "Frame" and v:FindFirstChild("ClickButton") then
@@ -1235,5 +1210,4 @@ Slider4:SetValue(0.5)
 
 spawn(function()
 while wait() do
-Save()
 end end)
