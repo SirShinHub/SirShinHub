@@ -1,3 +1,7 @@
+repeat
+    wait()
+until game:IsLoaded()
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G_Hub_Extras/main/Universal_Client_Bypass"))()
 local A = loadstring(game:HttpGet("https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/V.G-Hub-DA-LIST.lua"))()
 getgenv().Get =
