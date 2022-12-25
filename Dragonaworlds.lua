@@ -15,7 +15,7 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub
 elseif game.PlaceId == 4869039553 then
 loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/Dragonadventures.lua'))()   
 elseif game.PlaceId == 5777228223 then
-loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/V.G-Hub/main/Dragonadventures'))()  
+loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/Dragonadventures.lua'))()  
 elseif game.PlaceId == 3623549100 then
 loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/Dragonadventures.lua'))()    
 elseif game.PlaceId == 3737848045 then
@@ -25,6 +25,6 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub
 elseif game.PlaceId == 4728805070 then
 loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/Dragonadventures.lua'))()   
 elseif game.PlaceId == 5777228223 then
-loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/V.G-Hub/main/Dragonadventures'))()   
+loadstring(game:HttpGet('https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/Dragonadventures.lua'))()   
 
 end
