@@ -1210,5 +1210,4 @@ Slider4:SetValue(0.5)
 
 spawn(function()
 while wait() do
-Save()
 end end)
