@@ -1,8 +1,3 @@
-repeat
-    wait()
-until game:IsLoaded()
-
-
 loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G_Hub_Extras/main/Universal_Client_Bypass"))()
 local A = loadstring(game:HttpGet("https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/V.G-Hub-DA-LIST.lua"))()
 getgenv().Get =
@@ -88,31 +83,5 @@ StarterGui:SetCore(
     {
         Title = "Credis",
         Text = "Shin Editor"
-    }
-)
-wait(5)
-local function Copy()
-    setclipboard("https://discord.gg/HUBfmJUA2H")
-end
-local Gang = Instance.new("BindableFunction")
-
-local function Hoe(i, v)
-    StarterGui:SetCore("SendNotification", {Title = i, Text = v, Icon = "", Duration = 5})
-end
-function Gang.OnInvoke(v)
-    if v == "Yes" then
-        Copy()
-        Hoe("Discord Copied")
-    end
-end
-StarterGui:SetCore(
-    "SendNotification",
-    {
-        Title = "V.G Hub Discord",
-        Text = "Copy to clipboard?",
-        Duration = 5,
-        Callback = Gang,
-        Button1 = "Yes",
-        Button2 = "No"
     }
 )
