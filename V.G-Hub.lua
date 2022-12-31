@@ -39,7 +39,7 @@ ImageLabel.BackgroundTransparency = 1
 ImageLabel.Position = UDim2.new(0.5, -(303 / 2), 0.5, -(263 / 2))
 ImageLabel.Rotation = 0
 ImageLabel.Size = UDim2.new(0, 303, 0, 263)
-ImageLabel.Image = "rbxassetid://8429081004"
+ImageLabel.Image = ""
 ImageLabel.ImageTransparency = 1
 for Index = 1, 50, 2 do
     BlurEffect.Size = Index
@@ -79,13 +79,13 @@ StarterGui:SetCore(
     {
         Title = "Warning",
         Text = "RightControl to toggle GUI",
-        Duration = 15
+        Duration = 10
     }
 )
 StarterGui:SetCore(
     "SendNotification",
     {
         Title = "Credis",
-        Text = "Shin Editor"
+        Text = "Non OffIcail Shin Editor"
     }
 )
