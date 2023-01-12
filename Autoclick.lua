@@ -21,7 +21,7 @@ end
 
 --// UI Library \\--
 local Library = loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/Autoclick_Library'))()
-local Window = Library:CreateWindow("AutoClicker by SirShinHub")
+local Window = Library:CreateWindow("AutoClicker")
 Enabled_1 = Window:AddColor({
     text = 'Status:',
     flag = "Ezpi_1",
