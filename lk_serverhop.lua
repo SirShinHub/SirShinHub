@@ -4,11 +4,8 @@ local actualHour = os.date("!*t").hour
 local Deleted = false
 local S_T = game:GetService("TeleportService")
 local S_H = game:GetService("HttpService")
-
 local players = game.Players:GetPlayers()
-local crowded = true
 
-while crowded do
     local playerCount = 0
     for _, player in pairs(players) do
         playerCount = playerCount + 1
