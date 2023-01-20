@@ -1,53 +1,32 @@
-local function TPReturner(3475397644)
-    while true do
-        local Site;
-        if foundAnything == "" then
-            Site = S_H:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. placeId .. '/servers/Public?sortOrder=Asc&limit=100'))
-        else
-            Site = S_H:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. placeId .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+repeat
+    wait(3)
+        until game:IsLoaded()
+
+while true do
+    local playerCount = game:GetService("Players").NumPlayers
+    if playerCount > 3 then
+        local Http = game:GetService("HttpService") 
+        local TPS = game:GetService("TeleportService") 
+        local Api = "https://games.roblox.com/v1/games/"
+        local _place = game.PlaceId
+        local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+
+        function ListServers(cursor)
+            local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+            return Http:JSONDecode(Raw)
         end
-        local ID = ""
-        if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
-            foundAnything = Site.nextPageCursor
-        end
-        local num = 0;
-        for i,v in pairs(Site.data) do
-            local Possible = true
-            ID = tostring(v.id)
-            if tonumber(v.maxPlayers) > tonumber(v.playing) then
-                if tonumber(v.playing) <= 2  then
-                    for _,Existing in pairs(AllIDs) do
-                        if num ~= 0 then
-                            if ID == tostring(Existing) then
-                                Possible = false
-                            end
-                        else
-                            if tonumber(actualHour) ~= tonumber(Existing) then
-                                local delFile = pcall(function()
-                                    delfile("server-hop-temp.json")
-                                    AllIDs = {}
-                                    table.insert(AllIDs, actualHour)
-                                end)
-                            end
-                        end
-                        num = num + 1
-                    end
-                    if Possible == true then
-                        table.insert(AllIDs, ID)
-                        wait()
-                        pcall(function()
-                            writefile("server-hop-temp.json", S_H:JSONEncode(AllIDs))
-                            wait()
-                            S_T:TeleportToPlaceInstance(placeId, ID, game.Players.LocalPlayer)
-                        end)
-                        break
-                    end
-                end
-            end
-        end
-        if tonumber(game.Players.LocalPlayer.CurrentServer.PlayerCount) > 2 then
-            break
-        end
-        wait(4)
+
+        local Server, Next; 
+        repeat 
+            local Servers = ListServers(Next) 
+            Server = Servers.data[1] 
+            Next = Servers.nextPageCursor 
+        until Server 
+
+        TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+        break
+    else
+        print("Number of players is less than or equal to 2, script will not run.")
     end
+    wait(10)
 end
