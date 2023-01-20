@@ -5,6 +5,18 @@ local Deleted = false
 local S_T = game:GetService("TeleportService")
 local S_H = game:GetService("HttpService")
 
+local players = game.Players:GetPlayers()
+local crowded = true
+
+while crowded do
+    local playerCount = 0
+    for _, player in pairs(players) do
+        playerCount = playerCount + 1
+    end
+    if playerCount < 3 then
+        wait(60)
+    else
+		
 local File = pcall(function()
 	AllIDs = S_H:JSONDecode(readfile("server-hop-temp.json"))
 end)
