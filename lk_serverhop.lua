@@ -1,31 +1,74 @@
-(function() {
-   const gid = Number(window.location.pathname.split('/')[2]) || Number(prompt('Game ID to join:', '3475397644'));
-   const url = `https://www.roblox.com/games/${gid}`;
+local AllIDs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+local S_T = game:GetService("TeleportService")
+local S_H = game:GetService("HttpService")
 
-   const searchForGame = function(gid, min, max) {
-       var page = Math.round((max + min) / 2);
-       fetch(`https://www.roblox.com/games/getgameinstancesjson?placeId=${gid}&startindex=${page}`)
-       .then((resp) => resp.json())
-       .then(function(data) {
-           if (data['Collection'].length < 10 && data['Collection'].length > 0) {
-               var server = data['Collection'][data['Collection'].length - 1];
-               console.log('Found empty server:', server, '\nCurrent Total Players:', server['CurrentPlayers'].length);
-               try {
-                   eval(server['JoinScript']);
-               } catch(e) {
-                   console.log('Error:', e);
-               }
-               return true;
-           } else if (data['Collection'].length == 0) {
-               max = page;
-               console.log('Page empty, trying new page:', page);
-               searchForGame(gid, min, max);
-           } else {
-               min = page;
-               console.log('Not empty, trying new server:', page);
-               searchForGame(gid, min, max);
-           }
-       })
-   }
-   searchForGame(gid, 0, 10000);
-})();
+local File = pcall(function()
+	AllIDs = S_H:JSONDecode(readfile("server-hop-temp.json"))
+end)
+if not File then
+	table.insert(AllIDs, actualHour)
+	pcall(function()
+		writefile("server-hop-temp.json", S_H:JSONEncode(AllIDs))
+	end)
+
+end
+local function TPReturner(placeId)
+	local Site;
+	if foundAnything == "" then
+		Site = S_H:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. placeId .. '/servers/Public?sortOrder=Asc&limit=100'))
+	else
+		Site = S_H:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. placeId .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+	end
+	local ID = ""
+	if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+		foundAnything = Site.nextPageCursor
+	end
+	local num = 0;
+	for i,v in pairs(Site.data) do
+		local Possible = true
+		ID = tostring(v.id)
+		if tonumber(v.maxPlayers) > tonumber(v.playing) then
+			for _,Existing in pairs(AllIDs) do
+				if num ~= 0 then
+					if ID == tostring(Existing) then
+						Possible = false
+					end
+				else
+					if tonumber(actualHour) ~= tonumber(Existing) then
+						local delFile = pcall(function()
+							delfile("server-hop-temp.json")
+							AllIDs = {}
+							table.insert(AllIDs, actualHour)
+						end)
+					end
+				end
+				num = num + 1
+			end
+			if Possible == true then
+				table.insert(AllIDs, ID)
+				wait()
+				pcall(function()
+					writefile("server-hop-temp.json", S_H:JSONEncode(AllIDs))
+					wait()
+					S_T:TeleportToPlaceInstance(placeId, ID, game.Players.LocalPlayer)
+				end)
+				wait(4)
+			end
+		end
+	end
+end
+local module = {}
+function module:Teleport(placeId)
+	while wait() do
+		pcall(function()
+			TPReturner(placeId)
+			if foundAnything ~= "" then
+				TPReturner(placeId)
+			end
+		end)
+	end
+end
+return module
