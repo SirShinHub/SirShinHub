@@ -658,9 +658,6 @@ spawn(
         end
     end
 )
-
-end) 
-Toggle1:CreateKeybind("T", function(Key)
 end)
 
 local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/Karrot-Esp"))()
