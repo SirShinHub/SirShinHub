@@ -543,13 +543,13 @@ while Settings.AutoCollect do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                     Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(13, 13, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(17, -7, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
                         v:FindFirstChildWhichIsA("BasePart").Position
                     )
-                    wait(2)
+                    wait(1.3)
                     VirtualInputManager:SendKeyEvent(true, "E", false, game)
                     until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(3)
                 end
