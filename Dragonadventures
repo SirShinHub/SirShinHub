@@ -521,50 +521,55 @@ end
 
 
 
-local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
-Settings.AutoCollect = State
+local lastActivityTime = tick() -- initialize the timer variable
+local flag = true -- initialize the flag variable
 
-game:GetService("RunService").Stepped:connect(
-    function()
-        if Settings.AutoCollect then
-            pcall(
-                function()
-                    Noclip()
-                end
-            )
+local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
+    Settings.AutoCollect = State
+end)
+
+game:GetService("RunService").Stepped:connect(function()
+    if Settings.AutoCollect then
+        pcall(function()
+            Noclip()
+        end)
+    end
+end)
+
+local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
+    Settings.CollectionItem = String
+end)
+
+spawn(function()
+    while Settings.AutoCollect do
+        wait()
+        if flag then -- check if the flag is true
+            if tick() - lastActivityTime > 5 then -- check if there was no activity for 5 seconds
+                flag = false -- set the flag to false
+            else
+                pcall(function()
+                    for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                        if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                            Player.Character.HumanoidRootPart.CFrame =
+                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(10, -2, 0)
+                            wait(1)
+                            repeat
+                                wait()
+                                Player.Character.Humanoid:MoveTo(
+                                    v:FindFirstChildWhichIsA("BasePart").Position
+                                )
+                                wait(1)
+                                VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+                            lastActivityTime = tick() -- reset the timer variable
+                        end
+                    end
+                end)
+            end
+        else
+            flag = true -- set the flag to true to move to the next command
         end
     end
-)
-spawn(function()
-while Settings.AutoCollect do
-    wait()
-    pcall(
-        function()
-            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
-                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                    Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(10, -2, 0)
-                    wait(1)
-                    repeat
-                        wait()
-                        Player.Character.Humanoid:MoveTo(
-                            v:FindFirstChildWhichIsA("BasePart").Position
-                        )
-                        wait(1)
-                        if v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true then
-                            break
-                        end
-                    until v == nil or Settings.AutoCollect == false
-                    if v and v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true then
-                        wait(1)
-                        VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                    end
-                end
-            end
-        end
-    )
-end
-end)
 end)
 
 
