@@ -543,15 +543,22 @@ while Settings.AutoCollect do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                     Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(23, -3, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(10, -2, 0)
                     wait(1)
-                    repeat wait()
-                    Player.Character.Humanoid:MoveTo(
-                        v:FindFirstChildWhichIsA("BasePart").Position
-                    )
-                    wait(1.3)
-                    VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                    until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+                    repeat
+                        wait()
+                        Player.Character.Humanoid:MoveTo(
+                            v:FindFirstChildWhichIsA("BasePart").Position
+                        )
+                        wait(1)
+                        if v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true then
+                            break
+                        end
+                    until v == nil or Settings.AutoCollect == false
+                    if v and v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true then
+                        wait(1)
+                        VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                    end
                 end
             end
         end
