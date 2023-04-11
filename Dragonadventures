@@ -519,51 +519,46 @@ Dropdown1:SetOption(tostring(1))
 
 end
 
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:wait()
-local humanoid = character:WaitForChild("Humanoid")
-local rootPart = character:WaitForChild("HumanoidRootPart")
+local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
+Settings.AutoCollect = State
 
-local harvestNodes = Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()
-
-game:GetService("RunService").Stepped:connect(function()
-    if Settings.AutoCollect then
-        pcall(function()
-            local position = rootPart.Position
-
-            local closestNode, closestDistance
-            for i, node in pairs(harvestNodes) do
-                if node:IsA("Model") and node:FindFirstChildWhichIsA("BasePart") then
-                    local distance = (position - node:FindFirstChildWhichIsA("BasePart").Position).magnitude
-                    if closestNode == nil or distance < closestDistance then
-                        closestNode = node
-                        closestDistance = distance
-                    end
+game:GetService("RunService").Stepped:connect(
+    function()
+        if Settings.AutoCollect then
+            pcall(
+                function()
+                    Noclip()
                 end
-            end
-
-            if closestNode ~= nil then
-                local nodePosition = closestNode:FindFirstChildWhichIsA("BasePart").Position
-                local moveVector = (nodePosition - position)
-                local moveDirection = moveVector.unit
-                humanoid:Move(moveDirection)
-                repeat wait() until (position - nodePosition).magnitude <= 5
-            end
-
-            for i, v in pairs(harvestNodes) do
-                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                    local harvested = v:FindFirstChild("Harvested")
-                    if harvested == nil or harvested.Value == false then
-                        humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
-                        wait(1)
-                        VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                        wait(2)
-                    end
-                end
-            end
-        end)
+            )
+        end
     end
+)
+spawn(function()
+while Settings.AutoCollect do
+    wait()
+    pcall(
+        function()
+            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                    Player.Character.HumanoidRootPart.CFrame =
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(10, -2, 0)
+                    wait(1)
+                    repeat wait()
+                    Player.Character.Humanoid:MoveTo(
+                        v:FindFirstChildWhichIsA("BasePart").Position
+                    )
+                    wait(1)
+                    VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                    until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+                end
+            end
+        end
+    )
+end
 end)
+end)
+
+
 
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
