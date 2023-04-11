@@ -520,39 +520,45 @@ Dropdown1:SetOption(tostring(1))
 end
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
-    Settings.AutoCollect = State
+Settings.AutoCollect = State
 
-    game:GetService("RunService").Stepped:connect(function()
+game:GetService("RunService").Stepped:connect(
+    function()
         if Settings.AutoCollect then
-            pcall(function()
-                Noclip()
-            end)
-        end
-    end)
-
-    spawn(function()
-        while Settings.AutoCollect do
-            wait()
-            pcall(function()
-                for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
-                    if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                        -- Calculate the distance between the player's character and the object
-                        local distance = (v:FindFirstChildWhichIsA("BasePart").Position - Player.Character.HumanoidRootPart.Position).Magnitude
-                        if distance < 2 then -- Only trigger the "E" keypress if the object is close enough
-                            Player.Character.HumanoidRootPart.CFrame = v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(10, -2, 0)
-                            wait(1)
-                            repeat wait()
-                                Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
-                                wait(1)
-                                VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
-                        end
-                    end
+            pcall(
+                function()
+                    Noclip()
                 end
-            end)
+            )
         end
-    end)
+    end
+)
+spawn(function()
+while Settings.AutoCollect do
+    wait()
+    pcall(
+        function()
+            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                    Player.Character.HumanoidRootPart.CFrame =
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(10, -2, 0)
+                    wait(1)
+                    repeat wait()
+                    Player.Character.Humanoid:MoveTo(
+                        v:FindFirstChildWhichIsA("BasePart").Position
+                    )
+                    wait(1)
+                    VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                    until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+                end
+            end
+        end
+    )
+end
 end)
+end)
+
+
 
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
