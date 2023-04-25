@@ -564,7 +564,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                     for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                         if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                             Player.Character.HumanoidRootPart.CFrame =
-                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(10, -2, 0)
+                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -2, 0)
                             wait(1)
                             repeat wait()
                             Player.Character.Humanoid:MoveTo(
@@ -627,7 +627,7 @@ while Settings.AutoEgg do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest.Eggs.ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
                          Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(23, -3, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(2, -3, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
