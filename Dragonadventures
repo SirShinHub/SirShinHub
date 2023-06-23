@@ -519,33 +519,38 @@ Dropdown1:SetOption(tostring(1))
 
 end
 
+local function isPlayerNearby(position, range)
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player ~= game.Players.LocalPlayer then
+            local playerPosition = player.Character and player.Character.PrimaryPart and player.Character.PrimaryPart.Position
+            if playerPosition then
+                local distance = (position - playerPosition).Magnitude
+                if distance <= range then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function harvestObject(object)
+    -- Perform the harvesting actions here
+    -- ...
+end
+
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
 
-    local hitbox = Instance.new("Part")
-    hitbox.Size = Vector3.new(5, 5, 5) -- adjust the size of the hitbox as needed
-    hitbox.Anchored = true
-    hitbox.Transparency = 1
-    hitbox.CanCollide = false
-    hitbox.Parent = Player.Character.HumanoidRootPart
-
-    hitbox.Touched:Connect(function(part)
-        local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
-        if player and player ~= game.Players.LocalPlayer then
-            -- Add your desired actions when encountering another player here
-            if Settings.AutoCollect then
-                Settings.AutoCollect = false -- Stop the auto-collecting process
-                print("Stopped harvesting due to nearby player: " .. player.Name)
-                -- Move on to the next object immediately
-                local dropdownItems = Dropdown1:GetItems()
-                local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
-                if currentIndex then
-                    local nextIndex = currentIndex + 1
-                    if nextIndex > #dropdownItems then
-                        nextIndex = 1
-                    end
-                    Settings.CollectionItem = dropdownItems[nextIndex]
-                end
+    game.Workspace.Interactions.Nodes.Harvest.ChildAdded:Connect(function(object)
+        if Settings.AutoCollect then
+            -- Check if any player is nearby the object
+            local isNearby = isPlayerNearby(object.Position, 100) -- Adjust the range as needed
+            if not isNearby then
+                -- Harvest the object
+                harvestObject(object)
+            else
+                print("")
             end
         end
     end)
@@ -586,6 +591,31 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             )
         end
     end)
+end)
+
+local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
+    Settings.CollectionItem = String
+end)
+
+local Button1 = Section1:CreateButton("FixShip", function()
+    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+
+    wait(1)
+    VirtualInputManager:SendKeyEvent(true, "E", false, game)
+    wait(2)
+    for i = 1, 10 do
+        wait(1)
+        VirtualUser:ClickButton1(Vector2.new())
+    end
+    for i, v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetChildren()) do
+        Player.Character.HumanoidRootPart.CFrame = v.CFrame
+        wait(1)
+        VirtualInputManager:SendKeyEvent(true, "E", false, game)
+    end
+    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+
+    wait(1)
+    VirtualInputManager:SendKeyEvent(true, "E", false, game)
 end)
 
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
