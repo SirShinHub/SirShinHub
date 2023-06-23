@@ -452,75 +452,63 @@ end
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
 
-    local proximityPart = Instance.new("Part")
-    proximityPart.Size = Vector3.new(25, 25, 25)
-    proximityPart.Anchored = true
-    proximityPart.Transparency = 1
-    proximityPart.CanCollide = false
-    proximityPart.Parent = Player.Character.HumanoidRootPart
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+    raycastParams.FilterDescendantsInstances = {Player.Character}
+    raycastParams.MaxDistance = 100
 
-    local function checkPlayerProximity()
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            if player ~= game.Players.LocalPlayer then
-                local character = player.Character
-                if character then
-                    local distance = (character.HumanoidRootPart.Position - Player.Character.HumanoidRootPart.Position).Magnitude
-                    if distance <= proximityPart.Size.X then
-                        print("")
-
-                        local dropdownItems = Dropdown1:GetItems()
-                        local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
-                        if currentIndex then
-                            local nextIndex = currentIndex + 1
-                            if nextIndex > #dropdownItems then
-                                nextIndex = 1
-                            end
-                            Settings.CollectionItem = dropdownItems[nextIndex]
+    local function checkPlayerPresence()
+        for _, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+            if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                local raycastResult = workspace:Raycast(Player.Character.HumanoidRootPart.Position, v:FindFirstChildWhichIsA("BasePart").Position - Player.Character.HumanoidRootPart.Position, raycastParams)
+                if raycastResult and raycastResult.Instance:IsA("Model") and raycastResult.Instance:IsDescendantOf(game.Players:GetPlayers()) then
+                    local dropdownItems = Dropdown1:GetItems()
+                    local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+                    if currentIndex then
+                        local nextIndex = currentIndex + 1
+                        if nextIndex > #dropdownItems then
+                            nextIndex = 1
                         end
+                        Settings.CollectionItem = dropdownItems[nextIndex]
                     end
                 end
             end
         end
     end
 
-    game:GetService("RunService").Heartbeat:Connect(function()
-        checkPlayerProximity()
-    end)
-
-    game:GetService("RunService").Stepped:Connect(
-        function()
-            if Settings.AutoCollect then
-                pcall(
-                    function()
-                        Noclip()
-                    end
-                )
-            end
-        end
-    )
-
-    spawn(function()
+    local function performAutocollect()
         while Settings.AutoCollect do
             wait()
-            pcall(
-                function()
-                    for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
-                        if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                            Player.Character.HumanoidRootPart.CFrame =
-                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
+            pcall(function()
+                for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                    if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                        Player.Character.HumanoidRootPart.CFrame =
+                            v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
+                        wait(1)
+                        repeat
+                            wait()
+                            Player.Character.Humanoid:MoveTo(
+                                v:FindFirstChildWhichIsA("BasePart").Position
+                            )
                             wait(1)
-                            repeat
-                                wait()
-                                Player.Character.Humanoid:MoveTo(
-                                    v:FindFirstChildWhichIsA("BasePart").Position
-                                )
-                                wait(1)
-                                VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
-                        end
+                            VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                        until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
+                        wait(2)
                     end
                 end
-            )
+            end)
+        end
+    end
+
+    spawn(function()
+        performAutocollect()
+    end)
+
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if Settings.AutoCollect then
+            pcall(function()
+                checkPlayerPresence()
+            end)
         end
     end)
 end)
