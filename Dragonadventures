@@ -489,13 +489,28 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                 for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                     if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                         Player.Character.HumanoidRootPart.CFrame =
-                            v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5 * 5, -2, 0)
+                            v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(2 * 5, -2, 0)
                         wait(1)
 
                         repeat
+                            wait()
+                            Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game)
                         until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
+                        
+                        local radius = 3
+                        local angle = 0
+                        local orbitSpeed = 1
+
+                        while v and Settings.AutoCollect and not v:FindFirstChild("Harvested").Value do
+                            angle = angle + orbitSpeed
+                            local offset = Vector3.new(math.cos(math.rad(angle)) * radius, 0, math.sin(math.rad(angle)) * radius)
+                            local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position + offset
+                            Player.Character.Humanoid:MoveTo(targetPosition)
+                            wait()
+                        end
+
                         wait(2)
                     end
                 end
