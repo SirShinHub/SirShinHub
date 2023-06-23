@@ -451,27 +451,43 @@ end
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
-    local hitbox = Instance.new("Part")
-    hitbox.Size = Vector3.new(25, 25, 25) -- adjust the size of the hitbox as needed
-    hitbox.Anchored = true
-    hitbox.Transparency = 1
-    hitbox.CanCollide = false
-    hitbox.Parent = Player.Character.HumanoidRootPart
-    hitbox.Touched:Connect(function(part)
-        local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
-        if player then
-            local dropdownItems = Dropdown1:GetItems()
-            local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
-            if currentIndex then
-                local nextIndex = currentIndex + 1
-                if nextIndex > #dropdownItems then
-                    nextIndex = 1
+
+    local proximityPart = Instance.new("Part")
+    proximityPart.Size = Vector3.new(25, 25, 25)
+    proximityPart.Anchored = true
+    proximityPart.Transparency = 1
+    proximityPart.CanCollide = false
+    proximityPart.Parent = Player.Character.HumanoidRootPart
+
+    local function checkPlayerProximity()
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            if player ~= game.Players.LocalPlayer then
+                local character = player.Character
+                if character then
+                    local distance = (character.HumanoidRootPart.Position - Player.Character.HumanoidRootPart.Position).Magnitude
+                    if distance <= proximityPart.Size.X then
+                        print("")
+
+                        local dropdownItems = Dropdown1:GetItems()
+                        local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+                        if currentIndex then
+                            local nextIndex = currentIndex + 1
+                            if nextIndex > #dropdownItems then
+                                nextIndex = 1
+                            end
+                            Settings.CollectionItem = dropdownItems[nextIndex]
+                        end
+                    end
                 end
-                Settings.CollectionItem = dropdownItems[nextIndex]
             end
         end
+    end
+
+    game:GetService("RunService").Heartbeat:Connect(function()
+        checkPlayerProximity()
     end)
-    game:GetService("RunService").Stepped:connect(
+
+    game:GetService("RunService").Stepped:Connect(
         function()
             if Settings.AutoCollect then
                 pcall(
@@ -482,6 +498,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     )
+
     spawn(function()
         while Settings.AutoCollect do
             wait()
@@ -492,12 +509,13 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                             Player.Character.HumanoidRootPart.CFrame =
                                 v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
                             wait(1)
-                            repeat wait()
-                            Player.Character.Humanoid:MoveTo(
-                                v:FindFirstChildWhichIsA("BasePart").Position
-                            )
-                            wait(1)
-                            VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                            repeat
+                                wait()
+                                Player.Character.Humanoid:MoveTo(
+                                    v:FindFirstChildWhichIsA("BasePart").Position
+                                )
+                                wait(1)
+                                VirtualInputManager:SendKeyEvent(true, "E", false, game)
                             until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
                         end
                     end
@@ -506,6 +524,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 end)
+
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
