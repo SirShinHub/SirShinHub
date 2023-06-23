@@ -451,14 +451,14 @@ end
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
-
+    
     local hitbox = Instance.new("Part")
     hitbox.Size = Vector3.new(25, 25, 25)
     hitbox.Anchored = true
     hitbox.Transparency = 1
     hitbox.CanCollide = false
     hitbox.Parent = Player.Character.HumanoidRootPart
-
+    
     hitbox.Touched:Connect(function(part)
         local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
         if player then
@@ -473,58 +473,37 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     end)
-
-    game:GetService("RunService").Stepped:Connect(function()
-        if Settings.AutoCollect then
-            pcall(function()
-                Noclip()
-            end)
-        end
-    end)
-
+    
     spawn(function()
         while Settings.AutoCollect do
             wait()
             pcall(function()
                 for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                     if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                        Player.Character.HumanoidRootPart.CFrame =
-                            v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(2 * 5, -2, 0)
-                        wait(1)
-
+                        Player.Character.HumanoidRootPart.CFrame = v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(6, -2, 0)
+                        local startTime = tick()
                         repeat
                             wait()
-                            Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
-                            wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                        until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
-
-                        local harvested = v:FindFirstChild("Harvested")
-                        if harvested and harvested.Value == true then
-                            local radius = 5
-                            local angle = 0
-                            local orbitSpeed = 1
-                            local harvestStartTime = tick()
-
-                            repeat
-                                angle = angle + orbitSpeed
-                                local offset = Vector3.new(math.cos(math.rad(angle)) * radius, 0, math.sin(math.rad(angle)) * radius)
-                                local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position + offset
-                                Player.Character.Humanoid:MoveTo(targetPosition)
-                                wait()
-
-                                if tick() - harvestStartTime >= 10 then
-                                    break
-                                end
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
-
-                            wait(2)
-                        end
+                        until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true or tick() - startTime >= 5
+                        wait(2)
                     end
                 end
             end)
         end
     end)
+end)
+
+local Button1 = Section1:CreateButton("Next Collect", function()
+    local dropdownItems = Dropdown1:GetItems()
+    local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+    if currentIndex then
+        local nextIndex = currentIndex + 1
+        if nextIndex > #dropdownItems then
+            nextIndex = 1
+        end
+        Settings.CollectionItem = dropdownItems[nextIndex]
+    end
 end)
 
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
