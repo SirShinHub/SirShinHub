@@ -501,12 +501,12 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
 
                         local harvested = v:FindFirstChild("Harvested")
                         if harvested and harvested.Value == true then
-                            local radius = 3
+                            local radius = 5
                             local angle = 0
                             local orbitSpeed = 1
                             local harvestStartTime = tick()
 
-                            while v and Settings.AutoCollect do
+                            repeat
                                 angle = angle + orbitSpeed
                                 local offset = Vector3.new(math.cos(math.rad(angle)) * radius, 0, math.sin(math.rad(angle)) * radius)
                                 local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position + offset
@@ -516,10 +516,10 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                                 if tick() - harvestStartTime >= 10 then
                                     break
                                 end
-                            end
-                        end
+                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
 
-                        wait(2)
+                            wait(2)
+                        end
                     end
                 end
             end)
