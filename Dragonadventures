@@ -15,8 +15,8 @@ local wait = task.wait
 local spawn = task.spawn
 local Config = {
     WindowName = "SIRSHIN HUB",
-    Color = Color3.fromRGB(255, 5, 5),
-    Keybind = Enum.KeyCode.LeftControl
+    Color = Color3.fromRGB(40, 127, 71),
+    Keybind = Enum.KeyCode.RightControl
 }
 Player.Idled:connect(
     function()
@@ -452,7 +452,7 @@ end
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
     local hitbox = Instance.new("Part")
-    hitbox.Size = Vector3.new(5, 5, 5) -- adjust the size of the hitbox as needed
+    hitbox.Size = Vector3.new(25, 25, 25) -- adjust the size of the hitbox as needed
     hitbox.Anchored = true
     hitbox.Transparency = 1
     hitbox.CanCollide = false
@@ -494,23 +494,6 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                             wait(1)
                             repeat wait()
                             Player.Character.Humanoid:MoveTo(
-
-    
-          
-            
-    
-
-          
-          Expand Down
-          
-            
-    
-
-          
-          Expand Up
-    
-    @@ -627,7 +627,7 @@ while Settings.AutoEgg do
-  
                                 v:FindFirstChildWhichIsA("BasePart").Position
                             )
                             wait(1)
@@ -570,18 +553,7 @@ while Settings.AutoEgg do
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
-
-    
-          
-            
-    
-
-          
-          Expand Down
-    
-    
-  
-                        v:FindFirstChildWhichIsA("BasePart").Position
+                  v:FindFirstChildWhichIsA("BasePart").Position
                     )
                     wait(3)
                     if Settings.AutoEgg == false then
