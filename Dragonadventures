@@ -15,7 +15,7 @@ local wait = task.wait
 local spawn = task.spawn
 local Config = {
     WindowName = "SIRSHIN HUB",
-    Color = Color3.fromRGB(255, 0, 0),
+    Color = Color3.fromRGB(255, 5, 5),
     Keybind = Enum.KeyCode.LeftControl
 }
 Player.Idled:connect(
@@ -451,14 +451,12 @@ end
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
-
     local hitbox = Instance.new("Part")
     hitbox.Size = Vector3.new(5, 5, 5) -- adjust the size of the hitbox as needed
     hitbox.Anchored = true
     hitbox.Transparency = 1
     hitbox.CanCollide = false
     hitbox.Parent = Player.Character.HumanoidRootPart
-
     hitbox.Touched:Connect(function(part)
         local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
         if player then
@@ -473,7 +471,6 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     end)
-
     game:GetService("RunService").Stepped:connect(
         function()
             if Settings.AutoCollect then
@@ -485,7 +482,6 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     )
-
     spawn(function()
         while Settings.AutoCollect do
             wait()
@@ -495,9 +491,26 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                         if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                             Player.Character.HumanoidRootPart.CFrame =
                                 v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
-                            wait(1.5)
+                            wait(1)
                             repeat wait()
                             Player.Character.Humanoid:MoveTo(
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -627,7 +627,7 @@ while Settings.AutoEgg do
+  
                                 v:FindFirstChildWhichIsA("BasePart").Position
                             )
                             wait(1)
@@ -510,14 +523,11 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 end)
-
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
-
 local Button1 = Section1:CreateButton("FixShip", function()
 Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
-
 wait(1)
 VirtualInputManager:SendKeyEvent(true, "E", false, game)
 wait(2)
@@ -530,9 +540,10 @@ for i,v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetC
     VirtualInputManager:SendKeyEvent(true, "E", false, game)
 end 
 Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
-
 wait(1)
 VirtualInputManager:SendKeyEvent(true, "E", false, game)
+            
+           
 end)
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
@@ -559,6 +570,17 @@ while Settings.AutoEgg do
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
+
+    
+          
+            
+    
+
+          
+          Expand Down
+    
+    
+  
                         v:FindFirstChildWhichIsA("BasePart").Position
                     )
                     wait(3)
