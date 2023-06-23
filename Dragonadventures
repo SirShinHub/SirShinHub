@@ -498,17 +498,25 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game)
                         until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
-                        
-                        local radius = 3
-                        local angle = 0
-                        local orbitSpeed = 1
 
-                        while v and Settings.AutoCollect and not v:FindFirstChild("Harvested").Value do
-                            angle = angle + orbitSpeed
-                            local offset = Vector3.new(math.cos(math.rad(angle)) * radius, 0, math.sin(math.rad(angle)) * radius)
-                            local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position + offset
-                            Player.Character.Humanoid:MoveTo(targetPosition)
-                            wait()
+                        local harvested = v:FindFirstChild("Harvested")
+                        if harvested and harvested.Value == true then
+                            local radius = 3
+                            local angle = 0
+                            local orbitSpeed = 1
+                            local harvestStartTime = tick()
+
+                            while v and Settings.AutoCollect do
+                                angle = angle + orbitSpeed
+                                local offset = Vector3.new(math.cos(math.rad(angle)) * radius, 0, math.sin(math.rad(angle)) * radius)
+                                local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position + offset
+                                Player.Character.Humanoid:MoveTo(targetPosition)
+                                wait()
+
+                                if tick() - harvestStartTime >= 10 then
+                                    break
+                                end
+                            end
                         end
 
                         wait(2)
