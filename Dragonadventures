@@ -486,7 +486,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
 			Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
                             wait()
                             VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                        until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
+                        until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(1)
                         wait(2)
                     end
                 end
@@ -495,8 +495,12 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     end)
 end)
 
-local Button1 = Section1:CreateButton("Next Collect", function()
-    local dropdownItems = Dropdown1:GetItems()
+local Button1 = Section1:CreateButton("Next Collect", nil, function()
+    local dropdownItems = {}
+    if Dropdown1 then
+        dropdownItems = Dropdown1:GetItems()
+    end
+
     local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
     if currentIndex then
         local nextIndex = currentIndex + 1
@@ -504,11 +508,16 @@ local Button1 = Section1:CreateButton("Next Collect", function()
             nextIndex = 1
         end
         Settings.CollectionItem = dropdownItems[nextIndex]
-        
-        local currentNode = Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()[1]
-        if currentNode and currentNode:IsA("Model") and currentNode:FindFirstChildWhichIsA("BasePart") then
-            Player.Character.HumanoidRootPart.CFrame = currentNode:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(3, -2, 0)
-        end
+
+        wait()
+
+        pcall(function()
+            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.NextCollect then
+                    Player.Character.HumanoidRootPart.CFrame = v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
+                end
+            end
+        end)
     end
 end)
 
