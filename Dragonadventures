@@ -489,7 +489,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                 for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                     if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                         Player.Character.HumanoidRootPart.CFrame =
-                            v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(20 * 5, -2, 0)
+                            v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5 * 5, -2, 0)
                         wait(1)
 
                         repeat
