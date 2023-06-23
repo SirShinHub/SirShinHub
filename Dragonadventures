@@ -1,9 +1,7 @@
 repeat
     wait()
 until game:IsLoaded()
-
 wait(5)
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CoreGui = game:GetService("CoreGui")
 local HttpService = game:GetService("HttpService")
@@ -12,20 +10,14 @@ local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local StarterGui = game:GetService("StarterGui")
-
 local Player = Players.LocalPlayer
 local wait = task.wait 
 local spawn = task.spawn
-
-
-
-
 local Config = {
     WindowName = "SIRSHIN HUB",
     Color = Color3.fromRGB(40, 127, 71),
     Keybind = Enum.KeyCode.RightControl
 }
-
 Player.Idled:connect(
     function()
         VirtualUser:ClickButton2(Vector2.new())
@@ -34,16 +26,12 @@ Player.Idled:connect(
 repeat
     wait()
 until Player.Character
-
 local Name = "Dragon-Adventures.txt"
-
 Des = {}
 if makefolder then
     makefolder("SIRSHIN HUB")
 end
-
 local Settings
-
 if
     not pcall(
         function()
@@ -53,9 +41,7 @@ if
  then
     writefile("SIRSHIN HUB//" .. Name, HttpService:JSONEncode(Des))
 end
-
 Settings = HttpService:JSONDecode(readfile("SIRSHIN HUB//" .. Name))
-
 Player.PlayerGui.NodeGui.BoostFrame.ChildAdded:Connect(
     function(v)
         if v.ClassName == "Frame" and v:FindFirstChild("ClickButton") then
@@ -65,8 +51,6 @@ Player.PlayerGui.NodeGui.BoostFrame.ChildAdded:Connect(
         end
     end
 )
-
-
 if Player.PlayerGui:FindFirstChild("IntroFrame") then
     local Eh = Player.PlayerGui.IntroGui.IntroFrame.PlayButton
     local VirtualUser = VirtualUser
@@ -77,7 +61,6 @@ if Player.PlayerGui:FindFirstChild("IntroFrame") then
     Eh.Size = UDim2.new(0, 0, 0, 0)
 end
 local D = {"🕹️Player", "Guest"}
-
 local function GetDragons()
     local Target
     for i, v in ipairs(Player.Character.Dragons:GetChildren()) do
@@ -92,7 +75,6 @@ if game.PlaceId ~= 5777228223 then
         function()
             ReplicatedStorage.Remotes.SpinWheelRemote:InvokeServer()
             ReplicatedStorage.Remotes.ClaimWheelRemote:FireServer()
-
             StarterGui:SetCoreGuiEnabled(1, true)
             StarterGui:SetCoreGuiEnabled(2, true)
             StarterGui:SetCoreGuiEnabled(3, true)
@@ -104,13 +86,11 @@ local Poop = require(ReplicatedStorage.Storage.Worlds.Worlds)
 for i, v in pairs(Poop) do
     table.insert(Worlds, v.Name .. " " .. v.GameId)
 end
-
 function Invis()
     local Clone = Player.Character.LowerTorso.Root:Clone()
     Player.Character.LowerTorso.Root:remove()
     Clone.Parent = Player.Character.LowerTorso
 end
-
 getgenv().Text = Drawing.new("Text")
 Text.Color = Color3.new(0, 1, 1)
 Text.Font = 1
@@ -120,13 +100,11 @@ Text.Position = Vector2.new(30, Workspace.CurrentCamera.ViewportSize.Y - 100)
 Text.Size = 25
 Text.Text = ""
 Text.Visible = true
-
 Workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(
     function()
         Text.Position = Vector2.new(20, Workspace.CurrentCamera.ViewportSize.Y - 100)
     end
 )
-
 spawn(
     function()
         while wait() do
@@ -134,7 +112,6 @@ spawn(
         end
     end
 )
-
 function fuckyou()
     local PlaceID = game.PlaceId
     local AllIDs = {}
@@ -202,7 +179,6 @@ function fuckyou()
             end
         end
     end
-
     function Teleport()
         while wait() do
             pcall(
@@ -215,11 +191,9 @@ function fuckyou()
             )
         end
     end
-
     -- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
     Teleport()
 end
-
 for i, v in pairs(Players:GetPlayers()) do
     if not table.find(D, tostring(v:GetRoleInGroup(2919215))) then
         fuckyou()
@@ -232,7 +206,6 @@ Players.PlayerAdded:Connect(
         end
     end
 )
-
 local OldNameCall
 OldNameCall =
     hookmetamethod(
@@ -245,10 +218,6 @@ OldNameCall =
         return OldNameCall(A, B, ...)
     end
 )
-
-
-
-
 healing = {}
 for i, v in pairs(ReplicatedStorage.Storage.Items.Items.Healing:GetChildren()) do
     if v.ClassName == "ModuleScript" then
@@ -258,7 +227,6 @@ for i, v in pairs(ReplicatedStorage.Storage.Items.Items.Healing:GetChildren()) d
         end
     end
 end
-
 foods = {}
 for i, v in pairs(ReplicatedStorage.Storage.Items.Items.Food:GetChildren()) do
     if v.ClassName == "ModuleScript" then
@@ -283,10 +251,8 @@ for i, v in pairs(Player.Data.Dragons:GetChildren()) do
         table.insert(Dragon, v.Value)
     end
 end
-
 Player.Character.Humanoid.JumpPower = 50
 Player.Character.Humanoid.WalkSpeed = 35
-
 local Noclip = function()
     if Player.Character and Player.Character:FindFirstChildWhichIsA("Humanoid") then
         Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(11)
@@ -300,20 +266,15 @@ local Noclip = function()
 end 
 local deku1 = {"SolsticeFlares", "SolsticeBoxes"}
 local deku = {"Food", "Magic", "Resources"}
-
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/test"))()
 local Window = Library:CreateWindow(Config, CoreGui)
-
 local Tab1 = Window:CreateTab("Dragon Adventures")
 local Tab2 = Window:CreateTab("UI Settings")
-
 local Section1 = Tab1:CreateSection("AutoFarms")
 local Section2 = Tab1:CreateSection("Misc")
 local Section3 = Tab2:CreateSection("Menu")
 local Section4 = Tab2:CreateSection("Background")
-
 if game.PlaceId == 5777228223 then
-
 local Toggle1 = Section1:CreateToggle("Auto Bakery", Settings.Bake, function(State) 
 Settings.Bake = State
 local a = ReplicatedStorage["_replicationFolder"].BakeryClassClient
@@ -344,9 +305,7 @@ spawn(
         end
     end
 )
-
 end)
-
 Toggle1:AddToolTip("FUCK YOU")
 local Toggle1 = Section1:CreateToggle("Auto Chirstmas egg farm", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
@@ -387,13 +346,10 @@ while Settings.AutoEgg do
     )
 end
 end)
-
 end)
 Toggle1:AddToolTip("Teleports to Eggs")
 end 
-
 if game.PlaceId == 3475397644 then
-
 for i, v in pairs(Workspace.Interactions:GetDescendants()) do
     if v:IsA("TextLabel") and v.Name:match("Player")  then
         if
@@ -403,19 +359,14 @@ for i, v in pairs(Workspace.Interactions:GetDescendants()) do
                 ].ContainerFrame.NameLabel.Text 
          then
              Player.Character.HumanoidRootPart.CFrame = v.Parent.Parent.Parent.TeleportPart.CFrame
-
         end
     end
 end
-
-
 repeat
     wait()
 until Workspace.Interactions.Plots.Plots[Player.Name .. "_Plot"]:WaitForChild(
     "Base"
 )
-
-
 ss1 = {}
 for i, v in pairs(ReplicatedStorage.Storage.Items.Items.Eggs:GetChildren()) do
           if v.ClassName == "ModuleScript" then
@@ -425,11 +376,6 @@ for i, v in pairs(ReplicatedStorage.Storage.Items.Items.Eggs:GetChildren()) do
         end
     end
 end
-
-
-
-
-
 local Toggle1 = Section1:CreateToggle("Auto Incubate Eggs", Settings.Incubate, function(State) 
 Settings.Incubate = State
 spawn(function()
@@ -437,7 +383,6 @@ while Settings.Incubate do
     wait()
     for i, v in pairs(
         Workspace.Interactions.Plots.Plots[Player.Name .. "_Plot"].Base.Buildings:GetDescendants(
-
         )
     ) do
         if v.Name == "Incubator" then
@@ -450,19 +395,14 @@ while Settings.Incubate do
         end
     end
 end
-
 end)
 end)
-
 local Dropdown1 = Section1:CreateDropdown("Eggs", ss1, function(String)
     Settings.Egg = String
 end)
-
 local Button1 = Section1:CreateButton("Clear Base", function()
 Workspace.Interactions.Plots.Plots[Player.Name.."_Plot"].DeleteAllRemote:FireServer()
 end)
-
-
 local Button1 = Section1:CreateButton("GoTo Base", function()
 for i, v in pairs(Workspace.Interactions:GetDescendants()) do
     if v:IsA("TextLabel") and v.Name:match("Player")  then
@@ -473,12 +413,10 @@ for i, v in pairs(Workspace.Interactions:GetDescendants()) do
                 ].ContainerFrame.NameLabel.Text 
          then
              firetouchinterest(Player.Character.HumanoidRootPart, v.Parent.Parent.Parent.TeleportPart, 0)
-
         end
     end
 end
 end)
-
 local Button1 = Section1:CreateButton("Sell All Foods", function()
     for i, v in pairs(Player.Data.Resources:GetChildren()) do
         if table.find(foods,v.Name) and v.Value ~= 0 then wait(0.5)
@@ -488,10 +426,6 @@ local Button1 = Section1:CreateButton("Sell All Foods", function()
         end
     end
 end)
-
-
-
-
 local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, function(State) 
 Settings.Alchemy = State
 spawn(
@@ -505,57 +439,38 @@ spawn(
         end
     end
 )
-
 end)
-
 local Dropdown1 = Section1:CreateDropdown("Alchemy Foods",foods, function(String)
     Settings.AlchemyFoods = String
 end)
-
 local Dropdown1 = Section1:CreateDropdown("Alchemy Foods Amount",{1,5,10,15,20,25,50,75,100}, function(String)
     Settings.AlchemyFoodsamount = String
 end)
 Dropdown1:SetOption(tostring(1))
-
 end
-
-local function isPlayerNearby(position, range)
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        if player ~= game.Players.LocalPlayer then
-            local playerPosition = player.Character and player.Character.PrimaryPart and player.Character.PrimaryPart.Position
-            if playerPosition then
-                local distance = (position - playerPosition).Magnitude
-                if distance <= range then
-                    return true
-                end
-            end
-        end
-    end
-    return false
-end
-
-local function harvestObject(object)
-    -- Perform the harvesting actions here
-    -- ...
-end
-
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
-
-    game.Workspace.Interactions.Nodes.Harvest.ChildAdded:Connect(function(object)
-        if Settings.AutoCollect then
-            -- Check if any player is nearby the object
-            local isNearby = isPlayerNearby(object.Position, 100) -- Adjust the range as needed
-            if not isNearby then
-                -- Harvest the object
-                harvestObject(object)
-            else
-                print("")
+    local hitbox = Instance.new("Part")
+    hitbox.Size = Vector3.new(5, 5, 5) -- adjust the size of the hitbox as needed
+    hitbox.Anchored = true
+    hitbox.Transparency = 1
+    hitbox.CanCollide = false
+    hitbox.Parent = Player.Character.HumanoidRootPart
+    hitbox.Touched:Connect(function(part)
+        local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
+        if player then
+            local dropdownItems = Dropdown1:GetItems()
+            local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+            if currentIndex then
+                local nextIndex = currentIndex + 1
+                if nextIndex > #dropdownItems then
+                    nextIndex = 1
+                end
+                Settings.CollectionItem = dropdownItems[nextIndex]
             end
         end
     end)
-
-    game:GetService("RunService").Stepped:Connect(
+    game:GetService("RunService").Stepped:connect(
         function()
             if Settings.AutoCollect then
                 pcall(
@@ -566,7 +481,6 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     )
-
     spawn(function()
         while Settings.AutoCollect do
             wait()
@@ -577,13 +491,23 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                             Player.Character.HumanoidRootPart.CFrame =
                                 v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
                             wait(1.5)
-                            repeat
-                                wait()
-                                Player.Character.Humanoid:MoveTo(
-                                    v:FindFirstChildWhichIsA("BasePart").Position
-                                )
-                                wait(1)
-                                VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                            repeat wait()
+                            Player.Character.Humanoid:MoveTo(
+                                v:FindFirstChildWhichIsA("BasePart").Position
+
+    
+          
+            
+    
+
+          
+          Expand Down
+    
+    
+  
+                            )
+                            wait(1)
+                            VirtualInputManager:SendKeyEvent(true, "E", false, game)
                             until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
                         end
                     end
@@ -592,57 +516,28 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 end)
-
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
-
 local Button1 = Section1:CreateButton("FixShip", function()
-    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
-
+Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+wait(1)
+VirtualInputManager:SendKeyEvent(true, "E", false, game)
+wait(2)
+for i=1,10 do wait(1)
+    VirtualUser:ClickButton1(Vector2.new())
+end 
+for i,v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetChildren()) do
+    Player.Character.HumanoidRootPart.CFrame = v.CFrame
     wait(1)
     VirtualInputManager:SendKeyEvent(true, "E", false, game)
-    wait(2)
-    for i = 1, 10 do
-        wait(1)
-        VirtualUser:ClickButton1(Vector2.new())
-    end
-    for i, v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetChildren()) do
-        Player.Character.HumanoidRootPart.CFrame = v.CFrame
-        wait(1)
-        VirtualInputManager:SendKeyEvent(true, "E", false, game)
-    end
-    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
-
-    wait(1)
-    VirtualInputManager:SendKeyEvent(true, "E", false, game)
+end 
+Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+wait(1)
+VirtualInputManager:SendKeyEvent(true, "E", false, game)
+            
+           
 end)
-
-local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
-    Settings.CollectionItem = String
-end)
-
-local Button1 = Section1:CreateButton("FixShip", function()
-    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
-
-    wait(1)
-    VirtualInputManager:SendKeyEvent(true, "E", false, game)
-    wait(2)
-    for i = 1, 10 do
-        wait(1)
-        VirtualUser:ClickButton1(Vector2.new())
-    end
-    for i, v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetChildren()) do
-        Player.Character.HumanoidRootPart.CFrame = v.CFrame
-        wait(1)
-        VirtualInputManager:SendKeyEvent(true, "E", false, game)
-    end
-    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
-
-    wait(1)
-    VirtualInputManager:SendKeyEvent(true, "E", false, game)
-end)
-
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
 game:GetService("RunService").Stepped:connect(
@@ -682,10 +577,8 @@ while Settings.AutoEgg do
     )
 end
 end)
-
 end)
 Toggle1:AddToolTip("Teleports to Eggs")
-
 local Toggle1 = Section1:CreateToggle("Auto Fishing", Settings.AutoFish, function(State)
 Settings.AutoFish = State
 spawn(
@@ -694,14 +587,11 @@ spawn(
             wait()
             pcall(function()
             local Fish = require(ReplicatedStorage["_replicationFolder"].FishingClient)
-
             local StartCasting = Fish.StartCasting
             local Click = Fish.Click
             StartCasting(Fish, StartCasting)
-
             if Fish.Snagged == true then
                 Fish.ReelSignal:Fire()
-
                 if
                     Player.PlayerGui.FishingGui.ContainerFrame.ReelingFrame.BarLabel.InnerLabel.PointerLabel.Position.X.Scale <=
                         Player.PlayerGui.FishingGui.ContainerFrame.ReelingFrame.BarLabel.InnerLabel.SafeBarLabel.Position.X.Scale +
@@ -715,39 +605,25 @@ spawn(
     end
 )
 end)
-
 local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/Karrot-Esp"))()
-
-
-
 local Button1 = Section1:CreateButton("Equip Selected Dragon", function()
 for i,v in pairs(Player.Data.Dragons:GetDescendants()) do
 if  v.ClassName == 'StringValue' and  v.Value == Settings.Dragon and v:FindFirstChild("Stats") then 
 ReplicatedStorage.Remotes.EquipDragonRemote:InvokeServer(v.Name)
 end end 
 end) 
-
-
-
-
 local Dropdown1 = Section1:CreateDropdown("Dragons", Dragon, function(String)
     Settings.Dragon = String
 end)
-
-
 local Button1 = Section1:CreateButton("Delete Selected Dragon Speice", function()
 for i,v in pairs(Player.Data.Dragons:GetDescendants()) do
 if  v.ClassName == 'StringValue' and  v.Value == Settings.DeleteDragon and v:FindFirstChild("Stats") then 
 ReplicatedStorage.Remotes.DeleteDragonRemote:InvokeServer(v.Name)
 end end 
 end) 
-
-
-
 local Dropdown1 = Section1:CreateDropdown("Delete Dragons", Dragon, function(String)
     Settings.DeleteDragon = String
 end)
-
 local Button1 = Section1:CreateButton("UnEquip All Dragons", function()
 for i, v in pairs(Player.Character.Dragons:GetDescendants()) do
     if v.ClassName == "Model" and v:FindFirstChild("ID") then
@@ -755,7 +631,6 @@ for i, v in pairs(Player.Character.Dragons:GetDescendants()) do
     end
 end
 end)
-
 local Toggle1 = Section1:CreateToggle("Auto Feed Dragon", Settings.AutoFeed, function(State) 
 Settings.AutoFeed = State
 spawn(function()
@@ -819,14 +694,9 @@ while Settings.AutoHeal do wait(0.1)
 end
 end)
 end)
-
-
-
 local Dropdown1 = Section1:CreateDropdown("Healing Items", healing, function(String)
     Settings.HealingItem = String
 end)
-
-
 local Toggle1 = Section1:CreateToggle("Auto Invis", Settings.AutoInvis, function(State)
 Settings.AutoInvis = State
 Invis()
@@ -835,9 +705,6 @@ if Settings.AutoInvis then
 repeat wait() until Player.Character wait(3)
 Invis() end end)
 end)
-
-
-
 local Label1 = Section2:CreateLabel("World Teleports")
 local Button1 = Section2:CreateButton("Teleport to Selected World", function()
 for i,v in pairs(Poop) do
@@ -845,12 +712,9 @@ if string.find(Worlds,v.GameId) then
 ReplicatedStorage.Remotes.WorldTeleportRemote:InvokeServer(v.GameId,{})
 end end 
 end)
-
-
 local Dropdown1 = Section2:CreateDropdown("Worlds",Worlds, function(String)
     Worlds = String
 end)
-
 local Toggle1 = Section2:CreateToggle("Enable WalkSpeed/JumpPower", Settings.Go, function(State)
 Settings.Go = State
 game:GetService("RunService").Stepped:connect(
@@ -864,22 +728,16 @@ game:GetService("RunService").Stepped:connect(
         end
     end
 )
-
 end)
-
 local TextBox1 = Section2:CreateTextBox("Fps Cap", "Only numbers", true, function(Value)
     Settings.Fps = Value
 end)
-
 local TextBox1 = Section2:CreateTextBox("WalkSpeed", "Only numbers", true, function(Value)
     Settings.WalkSpeed = Value
 end)
 local TextBox1 = Section2:CreateTextBox("JumpPower", "Only numbers", true, function(Value)
     Settings.JumpPower = Value
 end)
-
-
-
 local Toggle1 = Section2:CreateToggle("Enable Esp", Settings.Esp, function(State)
     Settings.Esp = State
     ESP:Toggle(Settings.Esp)
@@ -909,7 +767,6 @@ Settings.EggEsp = State
 ESP.Egg = Settings.EggEsp
 end)
 end 
-
 local Toggle1 = Section2:CreateToggle("Player Esp", Settings.PlayerEsp, function(State)
     Settings.PlayerEsp = State
     ESP.Players = Settings.PlayerEsp
@@ -926,7 +783,6 @@ local Toggle1 = Section2:CreateToggle("Boxes Esp", Settings.Boxes, function(Stat
     Settings.Boxes = State
     ESP.Boxes = Settings.Boxes
 end)
-
 local Toggle1 = Section2:CreateToggle("Infinite Jump", Settings.InfiniteJump, function(State)
 Settings.InfiniteJump = State
 game:GetService("UserInputService").JumpRequest:connect(
@@ -937,8 +793,6 @@ game:GetService("UserInputService").JumpRequest:connect(
     end
 )
 end)
-
-
 local Toggle1 = Section2:CreateToggle("Invisicam", Settings.Sorry, function(State)
 Settings.Sorry = State
 if Settings.Sorry then
@@ -947,7 +801,6 @@ else
     Player.DevCameraOcclusionMode = "Zoom"
 end
 end)
-
 local Toggle1 = Section2:CreateToggle("N Noclip", Settings.Sex1, function(State)
 noclips = false
 Settings.Sex1 = State
@@ -976,9 +829,7 @@ game:GetService("RunService").Stepped:connect(
         end
     end
 )
-
 end)
-
 local Toggle1 = Section2:CreateToggle("J Noclip", Settings.Sex, function(State)
 Settings.Sex = State
 noclip = false
@@ -1136,10 +987,8 @@ for _, v in pairs(Workspace:GetDescendants()) do
     end
 end
 end)
-
 local Button1 = Section2:CreateButton("Teleport to RandomPlayer", function()
 local randomPlayer = Players:GetPlayers()[math.random(1, #Players:GetPlayers())]
-
 Player.Character.HumanoidRootPart.CFrame =
     CFrame.new(
     Vector3.new(
@@ -1152,7 +1001,6 @@ end)
 local Button1 = Section2:CreateButton("Lag Switch F3", function()
 local ass = false
 local bitch = settings()
-
 game:service "UserInputService".InputEnded:connect(
     function(i)
         if i.KeyCode == Enum.KeyCode.F3 then
@@ -1220,7 +1068,6 @@ function TPReturner()
         end
     end
 end
-
 function Teleport()
     while wait() do
         pcall(function()
@@ -1231,17 +1078,11 @@ function Teleport()
         end)
     end
 end
-
 -- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
 Teleport() 
 end)
 local Button1 = Section2:CreateButton("Rejoin", function()
 game:GetService("TeleportService"):Teleport(game.PlaceId, Player) end)
-
-
-
-
-
 local Toggle3 = Section3:CreateToggle("UI Toggle", nil, function(State)
 	Window:Toggle(State)
 end)
@@ -1256,7 +1097,6 @@ local Colorpicker3 = Section3:CreateColorpicker("UI Color", function(Color)
 	Window:ChangeColor(Color)
 end)
 Colorpicker3:UpdateColor(Config.Color)
-
 -- credits to jan for patterns
 local Dropdown3 = Section4:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
 	if Name == "Default" then
@@ -1276,22 +1116,18 @@ local Dropdown3 = Section4:CreateDropdown("Image", {"Default","Hearts","Abstract
 	end
 end)
 Dropdown3:SetOption("Default")
-
 local Colorpicker4 = Section4:CreateColorpicker("Color", function(Color)
 	Window:SetBackgroundColor(Color)
 end)
 Colorpicker4:UpdateColor(Color3.new(1,1,1))
-
 local Slider3 = Section4:CreateSlider("Transparency",0,1,nil,false, function(Value)
 	Window:SetBackgroundTransparency(Value)
 end)
 Slider3:SetValue(0)
-
 local Slider4 = Section4:CreateSlider("Tile Scale",0,1,nil,false, function(Value)
 	Window:SetTileScale(Value)
 end)
 Slider4:SetValue(0.5)
-
 spawn(function()
 while wait() do
 end end)
