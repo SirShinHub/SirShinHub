@@ -453,7 +453,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
     
     local hitbox = Instance.new("Part")
-    hitbox.Size = Vector3.new(25, 25, 25)
+    hitbox.Size = Vector3.new(10, 10, 10)
     hitbox.Anchored = true
     hitbox.Transparency = 1
     hitbox.CanCollide = false
@@ -480,12 +480,13 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             pcall(function()
                 for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                     if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                        Player.Character.HumanoidRootPart.CFrame = v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(6, -2, 0)
-                        local startTime = tick()
-                        repeat
+                        Player.Character.HumanoidRootPart.CFrame = v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
+                        wait(1)
+                	repeat
+			Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
                             wait()
                             VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                        until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true or tick() - startTime >= 5
+                        until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true
                         wait(2)
                     end
                 end
@@ -503,6 +504,11 @@ local Button1 = Section1:CreateButton("Next Collect", function()
             nextIndex = 1
         end
         Settings.CollectionItem = dropdownItems[nextIndex]
+        
+        local currentNode = Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()[1]
+        if currentNode and currentNode:IsA("Model") and currentNode:FindFirstChildWhichIsA("BasePart") then
+            Player.Character.HumanoidRootPart.CFrame = currentNode:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(3, -2, 0)
+        end
     end
 end)
 
