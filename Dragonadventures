@@ -15,8 +15,8 @@ local wait = task.wait
 local spawn = task.spawn
 local Config = {
     WindowName = "SIRSHIN HUB",
-    Color = Color3.fromRGB(40, 127, 71),
-    Keybind = Enum.KeyCode.RightControl
+    Color = Color3.fromRGB(255, 5, 5),
+    Keybind = Enum.KeyCode.LeftControl
 }
 Player.Idled:connect(
     function()
