@@ -15,8 +15,8 @@ local wait = task.wait
 local spawn = task.spawn
 local Config = {
     WindowName = "SIRSHIN HUB",
-    Color = Color3.fromRGB(40, 127, 71),
-    Keybind = Enum.KeyCode.RightControl
+    Color = Color3.fromRGB(255, 0, 0),
+    Keybind = Enum.KeyCode.LeftControl
 }
 Player.Idled:connect(
     function()
@@ -448,14 +448,17 @@ local Dropdown1 = Section1:CreateDropdown("Alchemy Foods Amount",{1,5,10,15,20,2
 end)
 Dropdown1:SetOption(tostring(1))
 end
+
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
+
     local hitbox = Instance.new("Part")
     hitbox.Size = Vector3.new(5, 5, 5) -- adjust the size of the hitbox as needed
     hitbox.Anchored = true
     hitbox.Transparency = 1
     hitbox.CanCollide = false
     hitbox.Parent = Player.Character.HumanoidRootPart
+
     hitbox.Touched:Connect(function(part)
         local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
         if player then
@@ -470,6 +473,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     end)
+
     game:GetService("RunService").Stepped:connect(
         function()
             if Settings.AutoCollect then
@@ -481,6 +485,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     )
+
     spawn(function()
         while Settings.AutoCollect do
             wait()
@@ -494,17 +499,6 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                             repeat wait()
                             Player.Character.Humanoid:MoveTo(
                                 v:FindFirstChildWhichIsA("BasePart").Position
-
-    
-          
-            
-    
-
-          
-          Expand Down
-    
-    
-  
                             )
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game)
@@ -516,11 +510,14 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 end)
+
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
+
 local Button1 = Section1:CreateButton("FixShip", function()
 Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+
 wait(1)
 VirtualInputManager:SendKeyEvent(true, "E", false, game)
 wait(2)
@@ -533,10 +530,9 @@ for i,v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetC
     VirtualInputManager:SendKeyEvent(true, "E", false, game)
 end 
 Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+
 wait(1)
 VirtualInputManager:SendKeyEvent(true, "E", false, game)
-            
-           
 end)
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
