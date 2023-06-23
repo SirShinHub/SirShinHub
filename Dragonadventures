@@ -531,20 +531,26 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
 
     hitbox.Touched:Connect(function(part)
         local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
-        if player then
-            local dropdownItems = Dropdown1:GetItems()
-            local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
-            if currentIndex then
-                local nextIndex = currentIndex + 1
-                if nextIndex > #dropdownItems then
-                    nextIndex = 1
+        if player and player ~= game.Players.LocalPlayer then
+            -- Add your desired actions when encountering another player here
+            if Settings.AutoCollect then
+                Settings.AutoCollect = false -- Stop the auto-collecting process
+                print("Stopped harvesting due to nearby player: " .. player.Name)
+                -- Move on to the next object immediately
+                local dropdownItems = Dropdown1:GetItems()
+                local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+                if currentIndex then
+                    local nextIndex = currentIndex + 1
+                    if nextIndex > #dropdownItems then
+                        nextIndex = 1
+                    end
+                    Settings.CollectionItem = dropdownItems[nextIndex]
                 end
-                Settings.CollectionItem = dropdownItems[nextIndex]
             end
         end
     end)
 
-    game:GetService("RunService").Stepped:connect(
+    game:GetService("RunService").Stepped:Connect(
         function()
             if Settings.AutoCollect then
                 pcall(
@@ -566,12 +572,13 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                             Player.Character.HumanoidRootPart.CFrame =
                                 v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, -2, 0)
                             wait(1.5)
-                            repeat wait()
-                            Player.Character.Humanoid:MoveTo(
-                                v:FindFirstChildWhichIsA("BasePart").Position
-                            )
-                            wait(1)
-                            VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                            repeat
+                                wait()
+                                Player.Character.Humanoid:MoveTo(
+                                    v:FindFirstChildWhichIsA("BasePart").Position
+                                )
+                                wait(1)
+                                VirtualInputManager:SendKeyEvent(true, "E", false, game)
                             until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
                         end
                     end
@@ -586,26 +593,26 @@ local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(Stri
 end)
 
 local Button1 = Section1:CreateButton("FixShip", function()
-Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
 
-wait(1)
-VirtualInputManager:SendKeyEvent(true, "E", false, game)
-wait(2)
-for i=1,10 do wait(1)
-    VirtualUser:ClickButton1(Vector2.new())
-end 
-for i,v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetChildren()) do
-    Player.Character.HumanoidRootPart.CFrame = v.CFrame
     wait(1)
     VirtualInputManager:SendKeyEvent(true, "E", false, game)
-end 
-Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
+    wait(2)
+    for i = 1, 10 do
+        wait(1)
+        VirtualUser:ClickButton1(Vector2.new())
+    end
+    for i, v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetChildren()) do
+        Player.Character.HumanoidRootPart.CFrame = v.CFrame
+        wait(1)
+        VirtualInputManager:SendKeyEvent(true, "E", false, game)
+    end
+    Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
 
-wait(1)
-VirtualInputManager:SendKeyEvent(true, "E", false, game)
-            
-           
+    wait(1)
+    VirtualInputManager:SendKeyEvent(true, "E", false, game)
 end)
+
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
 game:GetService("RunService").Stepped:connect(
