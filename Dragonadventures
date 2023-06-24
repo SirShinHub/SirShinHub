@@ -452,7 +452,7 @@ end
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
     local hitbox = Instance.new("Part")
-    hitbox.Size = Vector3.new(10, 10, 10)
+    hitbox.Size = Vector3.new(25, 25, 25)
     hitbox.Anchored = true
     hitbox.Transparency = 1
     hitbox.CanCollide = false
@@ -487,7 +487,8 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                                 v:FindFirstChildWhichIsA("BasePart").Position
                             )
                             wait(1)
-                            VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                            VirtualInputManager:SendKeyEvent(true, "E", false, game) 
+				wait(1)
                             until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
                         end
                     end
