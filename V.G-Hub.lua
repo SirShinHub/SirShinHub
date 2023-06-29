@@ -13,6 +13,13 @@ getgenv().Get =
         end
     }
 )
+local UserInputService = game:GetService("UserInputService")
+local Device = UserInputService.TouchEnabled
+if Device then
+	script.Parent.Visible = true	
+elseif not Device then
+	script.Parent.Visible = false
+end
 local CoreGui = Get.CoreGui
 local StarterGui = Get.StarterGui
 local Lighting = Get.Lighting
