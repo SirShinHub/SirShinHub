@@ -2,6 +2,16 @@ repeat
     wait()
 until game:IsLoaded()
 
+local ScreenGui = Instance.new("ScreenGui")
+if syn and syn.protect_gui then
+    syn.protect_gui(ScreenGui)
+    ScreenGui.Parent = CoreGui
+elseif gethui then
+    ScreenGui.Parent = gethui()
+else
+    ScreenGui.Parent = CoreGui
+end
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/Universal_Client_Bypass.lua"))()
 local A = loadstring(game:HttpGet("https://raw.githubusercontent.com/SirShinHub/SirShinHub/main/V.G-Hub-DA-LIST.lua"))()
 getgenv().Get =
@@ -29,15 +39,7 @@ local Lighting = Get.Lighting
 local BlurEffect = Instance.new("BlurEffect")
 BlurEffect.Parent = Lighting
 BlurEffect.Size = 0
-local ScreenGui = Instance.new("ScreenGui")
-if syn and syn.protect_gui then
-    syn.protect_gui(ScreenGui)
-    ScreenGui.Parent = CoreGui
-elseif gethui then
-    ScreenGui.Parent = gethui()
-else
-    ScreenGui.Parent = CoreGui
-end
+
 local ImageLabel = Instance.new("ImageLabel")
 ScreenGui.Parent = CoreGui
 ImageLabel.Parent = ScreenGui
