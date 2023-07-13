@@ -426,28 +426,6 @@ local Button1 = Section1:CreateButton("Sell All Foods", function()
         end
     end
 end)
-local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, function(State) 
-Settings.Alchemy = State
-spawn(
-    function()
-        while wait() and Settings.Alchemy do
-            for i, v in pairs(Player.Data.Resources:GetChildren()) do
-                if v.Name == Settings.AlchemyFoods and v.Value ~= 0 then
-                    ReplicatedStorage.Remotes.RecycleResourceRemote:InvokeServer(Settings.AlchemyFoods == Settings.AlchemyFoodsamount)
-                end
-            end
-        end
-    end
-)
-end)
-local Dropdown1 = Section1:CreateDropdown("Alchemy Foods",foods, function(String)
-    Settings.AlchemyFoods = String
-end)
-local Dropdown1 = Section1:CreateDropdown("Alchemy Foods Amount",{1,5,10,15,20,25,50,75,100}, function(String)
-    Settings.AlchemyFoodsamount = String
-end)
-Dropdown1:SetOption(tostring(1))
-end
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
@@ -560,7 +538,7 @@ while Settings.AutoEgg do
 end
 end)
 end)
-Toggle1:AddToolTip("Teleports to Eggs")
+
 local Toggle1 = Section1:CreateToggle("Auto Fishing", Settings.AutoFish, function(State)
 Settings.AutoFish = State
 spawn(
@@ -587,6 +565,7 @@ spawn(
     end
 )
 end)
+
 local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/Karrot-Esp"))()
 local Button1 = Section1:CreateButton("Equip Selected Dragon", function()
 for i,v in pairs(Player.Data.Dragons:GetDescendants()) do
@@ -594,25 +573,7 @@ if  v.ClassName == 'StringValue' and  v.Value == Settings.Dragon and v:FindFirst
 ReplicatedStorage.Remotes.EquipDragonRemote:InvokeServer(v.Name)
 end end 
 end) 
-local Dropdown1 = Section1:CreateDropdown("Dragons", Dragon, function(String)
-    Settings.Dragon = String
-end)
-local Button1 = Section1:CreateButton("Delete Selected Dragon Speice", function()
-for i,v in pairs(Player.Data.Dragons:GetDescendants()) do
-if  v.ClassName == 'StringValue' and  v.Value == Settings.DeleteDragon and v:FindFirstChild("Stats") then 
-ReplicatedStorage.Remotes.DeleteDragonRemote:InvokeServer(v.Name)
-end end 
-end) 
-local Dropdown1 = Section1:CreateDropdown("Delete Dragons", Dragon, function(String)
-    Settings.DeleteDragon = String
-end)
-local Button1 = Section1:CreateButton("UnEquip All Dragons", function()
-for i, v in pairs(Player.Character.Dragons:GetDescendants()) do
-    if v.ClassName == "Model" and v:FindFirstChild("ID") then
-        ReplicatedStorage.Remotes.UnequipDragonRemote:InvokeServer(v.Name)
-    end
-end
-end)
+
 local Toggle1 = Section1:CreateToggle("Auto Feed Dragon", Settings.AutoFeed, function(State) 
 Settings.AutoFeed = State
 spawn(function()
@@ -634,6 +595,7 @@ while Settings.AutoFeed do wait()
     end
 end)
 end)
+
 local Dropdown1 = Section1:CreateDropdown("Food Items",list, function(String)
     list = String
 end)
@@ -655,6 +617,7 @@ while Settings.AutoGrow do wait()
     end
 end)
 end)
+
 local Toggle1 = Section1:CreateToggle("Auto Heal Dragons", Settings.AutoHeal, function(State) 
 Settings.AutoHeal = State
 spawn(function()
@@ -676,9 +639,11 @@ while Settings.AutoHeal do wait(0.1)
 end
 end)
 end)
+
 local Dropdown1 = Section1:CreateDropdown("Healing Items", healing, function(String)
     Settings.HealingItem = String
 end)
+
 local Toggle1 = Section1:CreateToggle("Auto Invis", Settings.AutoInvis, function(State)
 Settings.AutoInvis = State
 Invis()
@@ -687,16 +652,20 @@ if Settings.AutoInvis then
 repeat wait() until Player.Character wait(3)
 Invis() end end)
 end)
+
 local Label1 = Section2:CreateLabel("World Teleports")
+
 local Button1 = Section2:CreateButton("Teleport to Selected World", function()
 for i,v in pairs(Poop) do
 if string.find(Worlds,v.GameId) then
 ReplicatedStorage.Remotes.WorldTeleportRemote:InvokeServer(v.GameId,{})
 end end 
 end)
+
 local Dropdown1 = Section2:CreateDropdown("Worlds",Worlds, function(String)
     Worlds = String
 end)
+
 local Toggle1 = Section2:CreateToggle("Enable WalkSpeed/JumpPower", Settings.Go, function(State)
 Settings.Go = State
 game:GetService("RunService").Stepped:connect(
@@ -775,6 +744,7 @@ game:GetService("UserInputService").JumpRequest:connect(
     end
 )
 end)
+
 local Toggle1 = Section2:CreateToggle("Invisicam", Settings.Sorry, function(State)
 Settings.Sorry = State
 if Settings.Sorry then
@@ -783,6 +753,7 @@ else
     Player.DevCameraOcclusionMode = "Zoom"
 end
 end)
+
 local Toggle1 = Section2:CreateToggle("N Noclip", Settings.Sex1, function(State)
 noclips = false
 Settings.Sex1 = State
@@ -812,6 +783,7 @@ game:GetService("RunService").Stepped:connect(
     end
 )
 end)
+
 local Toggle1 = Section2:CreateToggle("J Noclip", Settings.Sex, function(State)
 Settings.Sex = State
 noclip = false
@@ -834,6 +806,7 @@ Player:GetMouse().KeyDown:connect(
     end
 )
 end)
+
 local Toggle1 = Section2:CreateToggle("H Fly", Settings.Sex2, function(State)
 Settings.Sex2 = State
 local Max = 0
@@ -959,6 +932,7 @@ Mouse.KeyDown:connect(
     end
 )
 end)
+
 local Button1 = Section2:CreateButton("Anti Lag", function()
 for _, v in pairs(Workspace:GetDescendants()) do
     if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
@@ -969,29 +943,8 @@ for _, v in pairs(Workspace:GetDescendants()) do
     end
 end
 end)
-local Button1 = Section2:CreateButton("Teleport to RandomPlayer", function()
-local randomPlayer = Players:GetPlayers()[math.random(1, #Players:GetPlayers())]
-Player.Character.HumanoidRootPart.CFrame =
-    CFrame.new(
-    Vector3.new(
-        randomPlayer.Character.Head.Position.X,
-        randomPlayer.Character.Head.Position.Y,
-        randomPlayer.Character.Head.Position.Z
-    )
-)
-end)
-local Button1 = Section2:CreateButton("Lag Switch F3", function()
-local ass = false
-local bitch = settings()
-game:service "UserInputService".InputEnded:connect(
-    function(i)
-        if i.KeyCode == Enum.KeyCode.F3 then
-            ass = not ass
-            bitch.Network.IncomingReplicationLag = ass and 10 or 0
-        end
-    end
-)
- end) 
+
+
 local Button1 = Section2:CreateButton("ServerHop", function()
 local PlaceID = game.PlaceId
 local AllIDs = {}
@@ -1060,7 +1013,6 @@ function Teleport()
         end)
     end
 end
--- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
 Teleport() 
 end)
 local Button1 = Section2:CreateButton("Rejoin", function()
@@ -1079,7 +1031,7 @@ local Colorpicker3 = Section3:CreateColorpicker("UI Color", function(Color)
 	Window:ChangeColor(Color)
 end)
 Colorpicker3:UpdateColor(Config.Color)
--- credits to jan for patterns
+
 local Dropdown3 = Section4:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
 	if Name == "Default" then
 		Window:SetBackground("2151741365")
