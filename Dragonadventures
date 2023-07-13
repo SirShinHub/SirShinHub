@@ -426,6 +426,28 @@ local Button1 = Section1:CreateButton("Sell All Foods", function()
         end
     end
 end)
+local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, function(State) 
+    Settings.Alchemy = State
+    spawn(
+        function()
+            while wait() and Settings.Alchemy do
+                for i, v in pairs(Player.Data.Resources:GetChildren()) do
+                    if v.Name == Settings.AlchemyFoods and v.Value ~= 0 then
+                        ReplicatedStorage.Remotes.RecycleResourceRemote:InvokeServer(Settings.AlchemyFoods == Settings.AlchemyFoodsamount)
+                    end
+                end
+            end
+        end
+    )
+    end)
+    local Dropdown1 = Section1:CreateDropdown("Alchemy Foods",foods, function(String)
+        Settings.AlchemyFoods = String
+    end)
+    local Dropdown1 = Section1:CreateDropdown("Alchemy Foods Amount",{1,5,10,15,20,25,50,75,100}, function(String)
+        Settings.AlchemyFoodsamount = String
+    end)
+    Dropdown1:SetOption(tostring(1))
+    end
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
@@ -573,6 +595,25 @@ if  v.ClassName == 'StringValue' and  v.Value == Settings.Dragon and v:FindFirst
 ReplicatedStorage.Remotes.EquipDragonRemote:InvokeServer(v.Name)
 end end 
 end) 
+local Dropdown1 = Section1:CreateDropdown("Dragons", Dragon, function(String)
+    Settings.Dragon = String
+end)
+local Button1 = Section1:CreateButton("Delete Selected Dragon Speice", function()
+for i,v in pairs(Player.Data.Dragons:GetDescendants()) do
+if  v.ClassName == 'StringValue' and  v.Value == Settings.DeleteDragon and v:FindFirstChild("Stats") then 
+ReplicatedStorage.Remotes.DeleteDragonRemote:InvokeServer(v.Name)
+end end 
+end) 
+local Dropdown1 = Section1:CreateDropdown("Delete Dragons", Dragon, function(String)
+    Settings.DeleteDragon = String
+end)
+local Button1 = Section1:CreateButton("UnEquip All Dragons", function()
+for i, v in pairs(Player.Character.Dragons:GetDescendants()) do
+    if v.ClassName == "Model" and v:FindFirstChild("ID") then
+        ReplicatedStorage.Remotes.UnequipDragonRemote:InvokeServer(v.Name)
+    end
+end
+end)
 local Toggle1 = Section1:CreateToggle("Auto Feed Dragon", Settings.AutoFeed, function(State) 
 Settings.AutoFeed = State
 spawn(function()
