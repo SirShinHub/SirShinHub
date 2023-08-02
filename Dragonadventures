@@ -498,8 +498,8 @@ game:GetService("RunService").Stepped:connect(
                             )
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game) 
-				wait(0.5)
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+				wait(0.2)
+                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(1.8)
                         end
                     end
                 end
