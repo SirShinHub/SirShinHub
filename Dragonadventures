@@ -307,19 +307,19 @@ spawn(
 )
 end)
 Toggle1:AddToolTip("FUCK YOU")
-local Toggle1 = Section1:CreateToggle("Auto Christmas egg farm", Settings.AutoEgg, function(State) 
-    Settings.AutoEgg = State
-    game:GetService("RunService").Stepped:connect(
-        function()
-            if Settings.AutoEgg then
-                pcall(
-                    function()
-                    end
-                )
-            end
+local Toggle1 = Section1:CreateToggle("Auto Chirstmas egg farm", Settings.AutoEgg, function(State) 
+Settings.AutoEgg = State
+game:GetService("RunService").Stepped:connect(
+    function()
+        if Settings.AutoEgg then
+            pcall(
+                function()
+                    Noclip()
+                end
+            )
         end
-    )
-end)
+    end
+)
 spawn(function()
 while Settings.AutoEgg do
     wait()
@@ -471,17 +471,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     end)
-game:GetService("RunService").Stepped:connect(
-    function()
-        if Settings.AutoCollect then
-                pcall(
-                    function()
-                    end
-                )
-            end
-        end
-    )
-end)
+
     spawn(function()
         while Settings.AutoCollect do
             wait()
@@ -498,8 +488,8 @@ end)
                             )
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game) 
-				wait(0.2)
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(1.8)
+				wait(1)
+                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
                         end
                     end
                 end
@@ -531,33 +521,8 @@ VirtualInputManager:SendKeyEvent(true, "E", false, game)
            
 end)
 
-local Toggle1 = Section1:CreateToggle("Jump Toggle")
-local isJumping = false
-
-Toggle1.Activated:Connect(function()
-    isJumping = not isJumping  -- Toggle the jumping state
-    
-    if isJumping then
-        while isJumping do
-            game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
-            wait()
-        end
-    end
-end)
-
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
-game:GetService("RunService").Stepped:connect(
-    function()
-        if Settings.AutoEgg then
-            pcall(
-                function()
-                    Noclip()
-                end
-            )
-        end
-    end
-)
 spawn(function()
 while Settings.AutoEgg do
     wait()
@@ -566,7 +531,7 @@ while Settings.AutoEgg do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest.Eggs.ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
                          Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(5, 3, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 10, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
