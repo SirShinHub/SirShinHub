@@ -312,6 +312,10 @@ local Toggle1 = Section1:CreateToggle("Auto Christmas egg farm", Settings.AutoEg
     game:GetService("RunService").Stepped:connect(
         function()
             if Settings.AutoEgg then
+                pcall(
+                    function()
+                    end
+                )
             end
         end
     )
@@ -471,7 +475,11 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
 game:GetService("RunService").Stepped:connect(
     function()
         if Settings.AutoCollect then
-    	 end
+                pcall(
+                    function()
+                    end
+                )
+            end
         end
     )
 end)
