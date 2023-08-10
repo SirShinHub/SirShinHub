@@ -306,6 +306,19 @@ spawn(
     end
 )
 end)
+local Toggle1 = Section1:CreateToggle("Jump Toggle")
+local isJumping = false
+
+Toggle1.Activated:Connect(function()
+    isJumping = not isJumping  -- Toggle the jumping state
+    
+    if isJumping then
+        while isJumping do
+            game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
+            wait()
+        end
+    end
+end)
 Toggle1:AddToolTip("FUCK YOU")
 local Toggle1 = Section1:CreateToggle("Auto Chirstmas egg farm", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
