@@ -331,7 +331,6 @@ while Settings.AutoEgg do
                         v:GetModelCFrame() * CFrame.new(5, 3, 0)
                     wait(1)
                     repeat wait()
-		    game.Players.LocalPlayer.Character.Humanoid.Jump = true
                     Player.Character.Humanoid:MoveTo(
                         v:GetModelCFrame().Position
                     )
@@ -494,7 +493,6 @@ end)
                                 v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 10, 0)
                             wait(1)
                             repeat wait()
-			game.Players.LocalPlayer.Character.Humanoid.Jump = true
                             Player.Character.Humanoid:MoveTo(
                                 v:FindFirstChildWhichIsA("BasePart").Position
                             )
@@ -532,6 +530,21 @@ VirtualInputManager:SendKeyEvent(true, "E", false, game)
             
            
 end)
+
+local Toggle1 = Section1:CreateToggle("Jump Toggle")
+local isJumping = false
+
+Toggle1.Activated:Connect(function()
+    isJumping = not isJumping  -- Toggle the jumping state
+    
+    if isJumping then
+        while isJumping do
+            game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
+            wait()
+        end
+    end
+end)
+
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
 game:GetService("RunService").Stepped:connect(
