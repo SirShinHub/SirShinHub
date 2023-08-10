@@ -307,19 +307,15 @@ spawn(
 )
 end)
 Toggle1:AddToolTip("FUCK YOU")
-local Toggle1 = Section1:CreateToggle("Auto Chirstmas egg farm", Settings.AutoEgg, function(State) 
-Settings.AutoEgg = State
-game:GetService("RunService").Stepped:connect(
-    function()
-        if Settings.AutoEgg then
-            pcall(
-                function()
-                    Noclip()
-                end
-            )
+local Toggle1 = Section1:CreateToggle("Auto Christmas egg farm", Settings.AutoEgg, function(State) 
+    Settings.AutoEgg = State
+    game:GetService("RunService").Stepped:connect(
+        function()
+            if Settings.AutoEgg then
+            end
         end
-    end
-)
+    )
+end)
 spawn(function()
 while Settings.AutoEgg do
     wait()
@@ -331,6 +327,7 @@ while Settings.AutoEgg do
                         v:GetModelCFrame() * CFrame.new(5, 3, 0)
                     wait(1)
                     repeat wait()
+		    game.Players.LocalPlayer.Character.Humanoid.Jump = true
                     Player.Character.Humanoid:MoveTo(
                         v:GetModelCFrame().Position
                     )
@@ -474,14 +471,10 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
 game:GetService("RunService").Stepped:connect(
     function()
         if Settings.AutoCollect then
-            pcall(
-                function()
-                    Noclip()
-                end
-            )
+    	 end
         end
-    end
-)
+    )
+end)
     spawn(function()
         while Settings.AutoCollect do
             wait()
@@ -490,9 +483,10 @@ game:GetService("RunService").Stepped:connect(
                     for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                         if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                             Player.Character.HumanoidRootPart.CFrame =
-                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 7, 0)
+                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 10, 0)
                             wait(1)
                             repeat wait()
+			game.Players.LocalPlayer.Character.Humanoid.Jump = true
                             Player.Character.Humanoid:MoveTo(
                                 v:FindFirstChildWhichIsA("BasePart").Position
                             )
