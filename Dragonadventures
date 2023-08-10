@@ -328,7 +328,7 @@ while Settings.AutoEgg do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest.EventEggs.ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
                          Player.Character.HumanoidRootPart.CFrame =
-                        v:GetModelCFrame() * CFrame.new(5, 3, 0)
+                        v:GetModelCFrame() * CFrame.new(5, 10, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
@@ -486,6 +486,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                             Player.Character.Humanoid:MoveTo(
                                 v:FindFirstChildWhichIsA("BasePart").Position
                             )
+			    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game) 
 				wait(1)
@@ -534,10 +535,9 @@ while Settings.AutoEgg do
                         v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 10, 0)
                     wait(1)
                     repeat wait()
-                    Player.Character.Humanoid:MoveTo(
-                  v:FindFirstChildWhichIsA("BasePart").Position
-                    )
-                    wait(3)
+                    Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
+		    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
+                    wait(2)
                     if Settings.AutoEgg == false then
                         break
                     end
