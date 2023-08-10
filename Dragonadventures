@@ -306,7 +306,7 @@ spawn(
     end
 )
 end)
-local Toggle1 = Section1:CreateToggle("Jump Toggle")
+local Toggle1 = Section1:CreateToggle("Jump Toggle", nil, function(State)
 local isJumping = false
 
 Toggle1.Activated:Connect(function()
