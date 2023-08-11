@@ -306,17 +306,26 @@ spawn(
     end
 )
 end)
-local Toggle1 = Section1:CreateToggle("Jump Toggle", nil, function(State)
-local isJumping = false
+local Toggle2 = Section1:CreateToggle("Continuous Jump", nil, function(State)
+    Settings.ContinuousJump = State
 
-Toggle1.Activated:Connect(function()
-    isJumping = not isJumping  -- Toggle the jumping state
-    
-    if isJumping then
-        while isJumping do
-            game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
-            wait()
-        end
+    -- Check if the player is in the game
+    local player = game:GetService("Players").LocalPlayer
+    local character = player.Character
+    if not character or not character:FindFirstChild("Humanoid") then
+        return
+    end
+
+    local humanoid = character.Humanoid
+
+    -- Start or stop the continuous jump loop
+    if Settings.ContinuousJump then
+        spawn(function()
+            while Settings.ContinuousJump do
+                wait()
+                humanoid:Move(Vector3.new(0, 10, 0), true)
+            end
+        end)
     end
 end)
 Toggle1:AddToolTip("FUCK YOU")
