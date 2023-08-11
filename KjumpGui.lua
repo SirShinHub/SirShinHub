@@ -193,9 +193,10 @@ local function HUCPR_fake_script() -- active.scat
 	end)
 	
 	while true do
-		if jumploop then wait(5)
+		if jumploop then
 			game.Players.LocalPlayer.Character.Humanoid.Jump = true
 		end	
+		wait(5)
 	end
 	
 end
