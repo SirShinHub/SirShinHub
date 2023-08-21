@@ -527,25 +527,52 @@ wait(1)
 VirtualInputManager:SendKeyEvent(true, "E", false, game)         
 end)
 
-local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
+local TweenService = game:GetService("TweenService")
+
+local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State)
     Settings.AutoEgg = State
+    
+    local function MoveToEgg(eggPosition)
+        local character = game.Players.LocalPlayer.Character
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        
+        local tweenInfo = TweenInfo.new(0.5) -- Adjust the duration of the tween as needed
+        local targetCFrame = CFrame.new(eggPosition) * CFrame.new(0, 13, 0)
+        
+        local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = targetCFrame})
+        tween:Play()
+        tween.Completed:Wait()
+        
+        -- Trigger jump repeatedly while approaching the egg
+        local humanoid = character:WaitForChild("Humanoid")
+        while Settings.AutoEgg and (humanoidRootPart.Position - eggPosition).Magnitude > 5 do
+            humanoid:MoveTo(humanoidRootPart.Position)
+            humanoid.Jump = true
+            wait(1) -- Wait for 1 second before the next jump
+        end
+        
+        -- Trigger jump once more before harvesting
+        humanoid:MoveTo(humanoidRootPart.Position)
+        humanoid.Jump = true
+        
+        -- Perform the rest of the actions here (harvest, etc.)
+        -- ...
+    end
     
     spawn(function()
         while Settings.AutoEgg do
             wait()
             pcall(function()
-                local Egg = GetEgg()
-                local H = Egg:FindFirstChild("Harvested", true)
-                
-                if Egg and H and not H.Value then
-                    local targetPosition = Egg:GetModelCFrame().Position + Vector3.new(0, -20, 20)
-                    TweenCharacterTo(targetPosition)
-                    
-                    wait(3)
-                    CollectEgg(Egg)
-                    
-                    if not H.Value then
-                        wait(15)
+                local activeEggNodes = Workspace.Interactions.Nodes.Harvest.Eggs.ActiveNodes:GetChildren()
+                for i, v in pairs(activeEggNodes) do
+                    if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
+                        MoveToEgg(v:FindFirstChildWhichIsA("BasePart").Position)
+                        
+                        wait(6) -- Wait after harvesting before moving to the next egg
+                        
+                        if not Settings.AutoEgg then
+                            break
+                        end
                     end
                 end
             end)
