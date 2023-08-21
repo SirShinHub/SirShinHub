@@ -528,7 +528,7 @@ VirtualInputManager:SendKeyEvent(true, "E", false, game)
 end)
 
 local TweenService = game:GetService("TweenService")
-
+-- autoegg2
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State)
     Settings.AutoEgg = State
     
@@ -537,7 +537,7 @@ local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(Sta
         local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
         local humanoid = character:WaitForChild("Humanoid")
         
-        humanoidRootPart.CFrame = CFrame.new(eggPosition) * CFrame.new(0, 13, 0)
+        humanoidRootPart.CFrame = CFrame.new(eggPosition) * CFrame.new(0, -20, 20)
         
         wait(1)
         
