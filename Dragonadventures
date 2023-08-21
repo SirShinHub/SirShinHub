@@ -524,21 +524,11 @@ for i,v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetC
 end 
 Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
 wait(1)
-VirtualInputManager:SendKeyEvent(true, "E", false, game)
-            
-           
+VirtualInputManager:SendKeyEvent(true, "E", false, game)         
 end)
 
-local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State)
+local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
     Settings.AutoEgg = State
-    
-    local function TweenCharacterTo(position)
-        local humanoidRootPart = Player.Character:WaitForChild("HumanoidRootPart")
-        local tweenInfo = TweenInfo.new((position - humanoidRootPart.Position).Magnitude / 16, Enum.EasingStyle.Linear)
-        local tween = game:GetService("TweenService"):Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(position)})
-        tween:Play()
-        tween.Completed:Wait()
-    end
     
     spawn(function()
         while Settings.AutoEgg do
