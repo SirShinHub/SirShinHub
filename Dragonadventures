@@ -338,37 +338,28 @@ game:GetService("RunService").Stepped:connect(
             pcall(
                 function()
                     Noclip()
-                end
-            )
-        end
-    end
-)
+        	end)
+	end
+end)
 spawn(function()
 while Settings.AutoEgg do
     wait()
     pcall(
         function()
-            for i, v in pairs(Workspace.Interactions.Nodes.Harvest.EventEggs.ActiveNodes:GetChildren()) do
-                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
-                         Player.Character.HumanoidRootPart.CFrame =
-                        v:GetModelCFrame() * CFrame.new(5, 2, 0)
-                    wait(1)
-                    repeat wait()
-                    Player.Character.Humanoid:MoveTo(
-                        v:GetModelCFrame().Position
-                    )
+            local Egg = GetEgg()
+                local H = Egg:FindFirstChild("Harvested", true)
+                if Egg and H and not H.Value then
+                    Teleport(CFrame.new(Egg:GetModelCFrame().Position + Vector3.new(0, -20, 20)))
+                    Tween(Player.Character:FindFirstChild("HumanoidRootPart"), Egg:GetModelCFrame(), 16)
                     wait(3)
-                    if Settings.AutoEgg == false then
-                        break
+                    CollectEgg(Egg)
+                    if not H.Value and wait(15) then
+                        wait()
                     end
-                    VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                    until v == nil or Settings.AutoEgg == false or v.Harvested.Value == true and wait(6)
                 end
-            end
+            end)
         end
-    )
-end
-end)
+    end)
 end)
 Toggle1:AddToolTip("Teleports to Eggs")
 end 
