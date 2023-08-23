@@ -351,7 +351,7 @@ while Settings.AutoEgg do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest.EventEggs.ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
                          Player.Character.HumanoidRootPart.CFrame =
-                        v:GetModelCFrame() * CFrame.new(0, 5, 0)
+                        v:GetModelCFrame() * CFrame.new(5, 2, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
@@ -474,14 +474,6 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
-	pcall(
-                    function()
-                        Noclip()
-                    end
-                )
-            end
-        end
-    )
     local hitbox = Instance.new("Part")
     hitbox.Size = Vector3.new(25, 25, 25)
     hitbox.Anchored = true
@@ -511,7 +503,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                     for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                         if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                             Player.Character.HumanoidRootPart.CFrame =
-                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -12, 0)
+                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 13, 0)
                             wait(1)
                             repeat wait()
                             Player.Character.Humanoid:MoveTo(
@@ -529,6 +521,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 end)
+
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
@@ -562,7 +555,7 @@ while Settings.AutoEgg do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest.Eggs.ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
                          Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 13, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 5, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
