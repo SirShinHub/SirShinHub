@@ -267,16 +267,6 @@ local Noclip = function()
         end 
     end 
 end 
-local Noclip = function()
-    if Player.Character and Player.Character:FindFirstChildWhichIsA("Humanoid") then
-        for i,v in next, Player.Character:GetChildren() do
-            if v:IsA("BasePart") then
-                v.CanCollide = false
-                v.Velocity = Vector3.new(0,0,0)
-            end
-        end
-    end 
-end
 local deku1 = {"SolsticeFlares", "SolsticeBoxes"}
 local deku = {"Food", "Magic", "Resources"}
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/test"))()
@@ -506,7 +496,7 @@ while Settings.AutoCollect do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                     Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -10, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 5, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
@@ -567,7 +557,7 @@ while Settings.AutoEgg do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest.Eggs.ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
                          Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -10, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 5, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
