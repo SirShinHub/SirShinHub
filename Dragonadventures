@@ -474,6 +474,12 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
+	pcall(
+        function()
+            Noclip()
+        end
+    )
+end)
     local hitbox = Instance.new("Part")
     hitbox.Size = Vector3.new(25, 25, 25)
     hitbox.Anchored = true
@@ -495,6 +501,21 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 
+    local TweenService = game:GetService("TweenService")
+
+    local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
+    local offset = Vector3.new(0, -12, 0)
+    local newPosition = targetPosition + offset
+    
+    local humanoid = Player.Character.Humanoid
+    
+    local tweenInfo = TweenInfo.new(
+        (newPosition - humanoid.RootPart.Position).Magnitude / 0.5,
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.InOut
+    )
+    local tween = TweenService:Create(humanoid.RootPart, tweenInfo, {Position = newPosition})
+
     spawn(function()
         while Settings.AutoCollect do
             wait()
@@ -503,24 +524,21 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
                     for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                         if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                             Player.Character.HumanoidRootPart.CFrame =
-                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 13, 0)
+                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 0)
                             wait(1)
                             repeat wait()
-                            Player.Character.Humanoid:MoveTo(
-                                v:FindFirstChildWhichIsA("BasePart").Position
-                            )
-			    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
+                                tween:Play()
+                                tween.Completed:Wait()
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game) 
-				wait(1)
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+				            wait(1)
+                            until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(2.5)
                         end
                     end
                 end
             )
         end
     end)
-end)
 
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
