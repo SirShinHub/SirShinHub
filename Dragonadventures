@@ -308,43 +308,45 @@ spawn(
 end)
 
 Toggle1:AddToolTip("FUCK YOU")
-local Toggle1 = Section1:CreateToggle("Auto Christmas egg farm", Settings.AutoEgg, function(State)
-    Settings.AutoEgg = State
-    game:GetService("RunService").Stepped:Connect(function()
+local Toggle1 = Section1:CreateToggle("Auto Chirstmas egg farm", Settings.AutoEgg, function(State) 
+Settings.AutoEgg = State
+game:GetService("RunService").Stepped:connect(
+    function()
         if Settings.AutoEgg then
-            pcall(function()
-                Noclip()
-            end)
-        end
-    end)
-    
-    spawn(function()
-        while Settings.AutoEgg do
-            wait()
-            pcall(function()
-                for i, v in pairs(Workspace.Interactions.Nodes.Harvest.EventEggs.ActiveNodes:GetChildren()) do
-                    if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
-                        local targetPosition = v:GetModelCFrame().Position + Vector3.new(5, 2, 0)
-                        TweenCharacterTo(targetPosition)
-                        
-                        wait(1)
-                        
-                        repeat
-                            wait()
-                            TweenCharacterTo(v:GetModelCFrame().Position)
-                            wait(3)
-                            
-                            if not Settings.AutoEgg or v.Harvested.Value then
-                                break
-                            end
-                            
-                            VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                        until not Settings.AutoEgg or v == nil or v.Harvested.Value or wait(6)
-                    end
+            pcall(
+                function()
+                    Noclip()
                 end
-            end)
+            )
         end
-    end)
+    end
+)
+spawn(function()
+while Settings.AutoEgg do
+    wait()
+    pcall(
+        function()
+            for i, v in pairs(Workspace.Interactions.Nodes.Harvest.EventEggs.ActiveNodes:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
+                         Player.Character.HumanoidRootPart.CFrame =
+                        v:GetModelCFrame() * CFrame.new(5, 2, 0)
+                    wait(1)
+                    repeat wait()
+                    Player.Character.Humanoid:MoveTo(
+                        v:GetModelCFrame().Position
+                    )
+                    wait(3)
+                    if Settings.AutoEgg == false then
+                        break
+                    end
+                    VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                    until v == nil or Settings.AutoEgg == false or v.Harvested.Value == true and wait(6)
+                end
+            end
+        end
+    )
+end
+end)
 end)
 Toggle1:AddToolTip("Teleports to Eggs")
 end 
@@ -527,37 +529,19 @@ Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.Sh
 wait(1)
 VirtualInputManager:SendKeyEvent(true, "E", false, game)         
 end)
-
-local TweenService = game:GetService("TweenService")
 -- autoegg2
+local TweenService = game:GetService("TweenService")
+
 local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State)
-    Settings.AutoEgg = State
-    
-    local function CollectEgg(eggPosition)
-        local character = game.Players.LocalPlayer.Character
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-        local humanoid = character:WaitForChild("Humanoid")
-        
-        humanoidRootPart.CFrame = CFrame.new(eggPosition) * CFrame.new(0, -20, 20)
-        
-        wait(1)
-        
-        humanoid:MoveTo(eggPosition)
-        humanoid.Jump = true
-        
-        wait(2)
-        
-        local virtualInputManager = game:GetService("VirtualInputManager")
-        virtualInputManager:SendKeyEvent(true, "E", false, game)
-    end
-    
+Settings.AutoEgg = State
 spawn(function()
     while Settings.AutoCollect do
         wait()
         pcall(function()
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-					v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 10)
+				Player.Character.HumanoidRootPart.CFrame =
+				v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 10)
 					
                     local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position Vector3.new(0, -10, 0)
 
