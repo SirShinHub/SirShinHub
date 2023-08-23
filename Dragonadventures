@@ -306,6 +306,28 @@ spawn(
     end
 )
 end)
+local Toggle2 = Section1:CreateToggle("Continuous Jump", nil, function(State)
+    Settings.ContinuousJump = State
+
+    -- Check if the player is in the game
+    local player = game:GetService("Players").LocalPlayer
+    local character = player.Character
+    if not character or not character:FindFirstChild("Humanoid") then
+        return
+    end
+
+    local humanoid = character.Humanoid
+
+    -- Start or stop the continuous jump loop
+    if Settings.ContinuousJump then
+        spawn(function()
+            while Settings.ContinuousJump do
+                wait()
+                humanoid.Jump = true
+            end
+        end)
+    end
+end)
 
 Toggle1:AddToolTip("FUCK YOU")
 local Toggle1 = Section1:CreateToggle("Auto Chirstmas egg farm", Settings.AutoEgg, function(State) 
@@ -508,7 +530,6 @@ spawn(function()
     end
 end)
 end)
-
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
@@ -527,48 +548,39 @@ for i,v in pairs(Workspace.Interactions.GalaxyEvent.ShipCrash.ShipFragments:GetC
 end 
 Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
 wait(1)
-VirtualInputManager:SendKeyEvent(true, "E", false, game)         
+VirtualInputManager:SendKeyEvent(true, "E", false, game)
+            
+           
 end)
--- autoegg2
-local TweenService = game:GetService("TweenService")
 
-local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State)
+local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(State) 
 Settings.AutoEgg = State
 spawn(function()
-    while Settings.AutoCollect do
-        wait()
-        pcall(function()
-            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
-                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-				Player.Character.HumanoidRootPart.CFrame =
-				v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 10)
-					
-                    local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position Vector3.new(0, -10, 0)
-
-                    local humanoidRootPart = Player.Character.HumanoidRootPart
-                    local tweenInfo = TweenInfo.new((targetPosition - humanoidRootPart.Position).Magnitude / Humanoid.WalkSpeed)
-                    local tweenGoal = {}
-                    tweenGoal.Position = targetPosition
-
-                    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
-                    tween:Play()
-
+while Settings.AutoEgg do
+    wait()
+    pcall(
+        function()
+            for i, v in pairs(Workspace.Interactions.Nodes.Harvest.Eggs.ActiveNodes:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
+                         Player.Character.HumanoidRootPart.CFrame =
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 13, 0)
                     wait(1)
-
-                    repeat
-                        wait()
-                        Player.Character.Humanoid:MoveTo(targetPosition)
-                        game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
-                        wait(1)
-                        VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                        wait(1)
-                    until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(3)
+                    repeat wait()
+                    Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
+		    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
+                    wait(2)
+                    if Settings.AutoEgg == false then
+                        break
+                    end
+                    VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                    until v == nil or Settings.AutoEgg == false or v.Harvested.Value == true and wait(6)
                 end
             end
-        end)
-    end
+        end
+    )
+end
 end)
-
+end)
 Toggle1:AddToolTip("Teleports to Eggs")
 local Toggle1 = Section1:CreateToggle("Auto Fishing", Settings.AutoFish, function(State)
 Settings.AutoFish = State
