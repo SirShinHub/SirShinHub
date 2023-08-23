@@ -471,7 +471,7 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
     end)
     Dropdown1:SetOption(tostring(1))
     end
-
+--Helpcollect
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
     local hitbox = Instance.new("Part")
@@ -494,6 +494,7 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
             end
         end
     end)
+end)
 
     local TweenService = game:GetService("TweenService")
 
