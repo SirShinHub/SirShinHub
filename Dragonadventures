@@ -481,53 +481,29 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     )
 end)
 
-local hitbox = Instance.new("Part")
-hitbox.Size = Vector3.new(25, 25, 25)
-hitbox.Anchored = true
-hitbox.Transparency = 1
-hitbox.CanCollide = false
-hitbox.Parent = Player.Character.HumanoidRootPart
-
-hitbox.Touched:Connect(function(part)
-    local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
-    if player then
-        local dropdownItems = Dropdown1:GetItems()
-        local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
-        if currentIndex then
-            local nextIndex = currentIndex + 1
-            if nextIndex > #dropdownItems then
-                nextIndex = 1
+    local hitbox = Instance.new("Part")
+    hitbox.Size = Vector3.new(25, 25, 25)
+    hitbox.Anchored = true
+    hitbox.Transparency = 1
+    hitbox.CanCollide = false
+    hitbox.Parent = Player.Character.HumanoidRootPart
+    hitbox.Touched:Connect(function(part)
+        local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
+        if player then
+            local dropdownItems = Dropdown1:GetItems()
+            local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+            if currentIndex then
+                local nextIndex = currentIndex + 1
+                if nextIndex > #dropdownItems then
+                    nextIndex = 1
+                end
+                Settings.CollectionItem = dropdownItems[nextIndex]
             end
-            Settings.CollectionItem = dropdownItems[nextIndex]
         end
-    end
-end)
-
-local TweenService = game:GetService("TweenService")
-
-local function moveToWithTween(targetPosition, offset, speed)
-    local newPosition = targetPosition + offset
-    local humanoid = Player.Character.Humanoid
-
-    local tweenInfo = TweenInfo.new(
-        (newPosition - humanoid.RootPart.Position).Magnitude / speed,
-        Enum.EasingStyle.Linear,
-        Enum.EasingDirection.InOut
-    )
-
-    local tween = TweenService:Create(humanoid.RootPart, tweenInfo, {Position = newPosition})
-    
-    local isTweenComplete = false
-    tween.Completed:Connect(function()
-        isTweenComplete = true
     end)
-    
-    tween:Play()
 
-    while not isTweenComplete do
-        wait()
-    end
-end
+local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
+local offset = Vector3.new(0, -12, 0)
 
 spawn(function()
     while Settings.AutoCollect do
@@ -539,7 +515,7 @@ spawn(function()
                         v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 0)
                     wait(1)
                     repeat wait()
-                        moveToWithTween(v:FindFirstChildWhichIsA("BasePart").Position, Vector3.new(0, -12, 0), 0.5)
+                        Player.Character.Humanoid:MoveTo(targetPosition + offset)
                         wait(1)
                         VirtualInputManager:SendKeyEvent(true, "E", false, game) 
 				        wait(1)
