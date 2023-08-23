@@ -474,12 +474,6 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
 
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
-	pcall(
-        function()
-            Noclip()
-        end
-    )
-end)
     local hitbox = Instance.new("Part")
     hitbox.Size = Vector3.new(25, 25, 25)
     hitbox.Anchored = true
