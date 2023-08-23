@@ -471,6 +471,7 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
     end)
     Dropdown1:SetOption(tostring(1))
     end
+
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
 	pcall(
@@ -538,7 +539,6 @@ end)
             )
         end
     end)
-
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
