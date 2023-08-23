@@ -501,20 +501,8 @@ end)
         end
     end)
 
-    local TweenService = game:GetService("TweenService")
-
-    local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
-    local offset = Vector3.new(0, -12, 0)
-    local newPosition = targetPosition + offset
-    
-    local humanoid = Player.Character.Humanoid
-    
-    local tweenInfo = TweenInfo.new(
-        (newPosition - humanoid.RootPart.Position).Magnitude / 0.5,
-        Enum.EasingStyle.Linear,
-        Enum.EasingDirection.InOut
-    )
-    local tween = TweenService:Create(humanoid.RootPart, tweenInfo, {Position = newPosition})
+local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
+local offset = Vector3.new(0, -12, 0)
 
     spawn(function()
         while Settings.AutoCollect do
@@ -527,9 +515,9 @@ end)
                                 v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 0)
                             wait(1)
                             repeat wait()
-                                tween:Play()
-                            wait(1)
-                            VirtualInputManager:SendKeyEvent(true, "E", false, game) 
+                                Player.Character.Humanoid:MoveTo(targetPosition + offset)
+    				wait(1)
+				VirtualInputManager:SendKeyEvent(true, "E", false, game)
 			    wait(1)
                             until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(2.5)
                         end
@@ -538,6 +526,7 @@ end)
             )
         end
     end)
+
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
