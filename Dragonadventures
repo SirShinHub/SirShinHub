@@ -528,11 +528,6 @@ end)
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
-Dropdown1:OnChanged(function(selected)
-    Dropdown1:SetOption(selected)
-end)
-Dropdown1:SetOption(deku[1])
-
 local Button1 = Section1:CreateButton("FixShip", function()
 Player.Character.HumanoidRootPart.CFrame = Workspace.Interactions.GalaxyEvent.ShipCrash.NPC.HumanoidRootPart.CFrame
 wait(1)
