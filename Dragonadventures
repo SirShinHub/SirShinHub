@@ -528,10 +528,9 @@ end)
                             wait(1)
                             repeat wait()
                                 tween:Play()
-                                tween.Completed:Wait()
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game) 
-				            wait(1)
+			    wait(1)
                             until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(2.5)
                         end
                     end
