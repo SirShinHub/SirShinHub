@@ -1,3 +1,6 @@
+repeat wait() until game:IsLoaded()
+local Table = {3475397644, 5391312853, 3752680052, 4174118306, 3475419198, 3475422608, 4601778915, 4869039553, 5777228223, 3623549100, 3737848045, 3487210751, 4728805070, 5777228223}
+if not table.find(Table, game.PlaceId) then return end
 repeat
     wait()
 until game:IsLoaded()
