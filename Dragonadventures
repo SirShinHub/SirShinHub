@@ -1,7 +1,13 @@
 repeat
     wait()
 until game:IsLoaded()
-wait(5)
+local get_thread_context = get_thread_context or getthreadcontext or getidentity or syn.get_thread_identity
+local get_thread_identity = get_thread_context
+local set_thread_context = set_thread_context or setthreadcontext or setidentity or syn.set_thread_identity
+for i,v in next, getconnections(LogService.MessageOut) do
+    v:Enable()
+end
+wait()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CoreGui = game:GetService("CoreGui")
 local HttpService = game:GetService("HttpService")
@@ -471,63 +477,58 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
     end)
     Dropdown1:SetOption(tostring(1))
     end
--- autocollect Updated
+
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
-	pcall(
-        function()
-            Noclip()
-        end
-    )
-end)
-
-local hitbox = Instance.new("Part")
-hitbox.Size = Vector3.new(25, 25, 25)
-hitbox.Anchored = true
-hitbox.Transparency = 1
-hitbox.CanCollide = false
-hitbox.Parent = Player.Character.HumanoidRootPart
-
-hitbox.Touched:Connect(function(part)
-    local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
-    if player then
-        local dropdownItems = Dropdown1:GetItems()
-        local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
-        if currentIndex then
-            local nextIndex = currentIndex + 1
-            if nextIndex > #dropdownItems then
-                nextIndex = 1
-            end
-            Settings.CollectionItem = dropdownItems[nextIndex]
-        end
-    end
-end)
-
-spawn(function()
-    while Settings.AutoCollect do
-        wait()
-        pcall(function()
-            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
-                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                    Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 0)
-                    wait(1)
-			local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
-			local offset = Vector3.new(0, -12, 0)
-                    repeat wait()
-                        Player.Character.Humanoid:MoveTo(targetPosition + offset)
-                        wait(1)
-                        VirtualInputManager:SendKeyEvent(true, "E", false, game) 
-				        wait(1)
-                    until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(2.5)
+    local hitbox = Instance.new("Part")
+    hitbox.Size = Vector3.new(25, 25, 25)
+    hitbox.Anchored = true
+    hitbox.Transparency = 1
+    hitbox.CanCollide = false
+    hitbox.Parent = Player.Character.HumanoidRootPart
+    hitbox.Touched:Connect(function(part)
+        local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
+        if player then
+            local dropdownItems = Dropdown1:GetItems()
+            local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+            if currentIndex then
+                local nextIndex = currentIndex + 1
+                if nextIndex > #dropdownItems then
+                    nextIndex = 1
                 end
+                Settings.CollectionItem = dropdownItems[nextIndex]
             end
-        end)
-    end
-end)
--- end autocollect
+        end
+    end)
 
-local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
+    spawn(function()
+        while Settings.AutoCollect do
+            wait()
+            pcall(
+                function()
+                    for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                        if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                            Player.Character.HumanoidRootPart.CFrame =
+                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 5, 0)
+                            wait(1)
+                            repeat wait()
+                            Player.Character.Humanoid:MoveTo(
+                                v:FindFirstChildWhichIsA("BasePart").Position
+                            )
+			    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
+                            wait(1)
+                            VirtualInputManager:SendKeyEvent(true, "E", false, game) 
+				wait(1)
+                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+                        end
+                    end
+                end
+            )
+        end
+    end)
+end)
+
+local Dropdown1 = Section1:CreateDropdown("Collection Item", deku[1], function(String)
     Settings.CollectionItem = String
 end)
 local Button1 = Section1:CreateButton("FixShip", function()
@@ -564,7 +565,6 @@ while Settings.AutoEgg do
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(v:FindFirstChildWhichIsA("BasePart").Position)
-		    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
                     wait(2)
                     if Settings.AutoEgg == false then
                         break
