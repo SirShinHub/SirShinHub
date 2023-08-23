@@ -481,29 +481,27 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     )
 end)
 
-    local hitbox = Instance.new("Part")
-    hitbox.Size = Vector3.new(25, 25, 25)
-    hitbox.Anchored = true
-    hitbox.Transparency = 1
-    hitbox.CanCollide = false
-    hitbox.Parent = Player.Character.HumanoidRootPart
-    hitbox.Touched:Connect(function(part)
-        local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
-        if player then
-            local dropdownItems = Dropdown1:GetItems()
-            local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
-            if currentIndex then
-                local nextIndex = currentIndex + 1
-                if nextIndex > #dropdownItems then
-                    nextIndex = 1
-                end
-                Settings.CollectionItem = dropdownItems[nextIndex]
-            end
-        end
-    end)
+local hitbox = Instance.new("Part")
+hitbox.Size = Vector3.new(25, 25, 25)
+hitbox.Anchored = true
+hitbox.Transparency = 1
+hitbox.CanCollide = false
+hitbox.Parent = Player.Character.HumanoidRootPart
 
-local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
-local offset = Vector3.new(0, -12, 0)
+hitbox.Touched:Connect(function(part)
+    local player = game:GetService("Players"):GetPlayerFromCharacter(part.Parent)
+    if player then
+        local dropdownItems = Dropdown1:GetItems()
+        local currentIndex = table.find(dropdownItems, Settings.CollectionItem)
+        if currentIndex then
+            local nextIndex = currentIndex + 1
+            if nextIndex > #dropdownItems then
+                nextIndex = 1
+            end
+            Settings.CollectionItem = dropdownItems[nextIndex]
+        end
+    end
+end)
 
 spawn(function()
     while Settings.AutoCollect do
@@ -514,6 +512,8 @@ spawn(function()
                     Player.Character.HumanoidRootPart.CFrame =
                         v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 0)
                     wait(1)
+			local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
+			local offset = Vector3.new(0, -12, 0)
                     repeat wait()
                         Player.Character.Humanoid:MoveTo(targetPosition + offset)
                         wait(1)
