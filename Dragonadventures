@@ -472,9 +472,14 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
     Dropdown1:SetOption(tostring(1))
     end
 
-local TweenService = game:GetService("TweenService")
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
+	pcall(
+        function()
+            Noclip()
+        end
+    )
+end)
     local hitbox = Instance.new("Part")
     hitbox.Size = Vector3.new(25, 25, 25)
     hitbox.Anchored = true
@@ -496,40 +501,45 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 
-spawn(function()
-    while Settings.AutoCollect do
-        wait()
-        pcall(function()
-            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
-                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                         Player.Character.HumanoidRootPart.CFrame =
-			v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -8, 0)
-					
-                    local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position Vector3.new(0, -8, 0)
+    local TweenService = game:GetService("TweenService")
 
-                    local humanoidRootPart = Player.Character.HumanoidRootPart
-                    local tweenInfo = TweenInfo.new((targetPosition - humanoidRootPart.Position).Magnitude / Humanoid.WalkSpeed)
-                    local tweenGoal = {}
-                    tweenGoal.Position = targetPosition
+    local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position
+    local offset = Vector3.new(0, -12, 0)
+    local newPosition = targetPosition + offset
+    
+    local humanoid = Player.Character.Humanoid
+    
+    local tweenInfo = TweenInfo.new(
+        (newPosition - humanoid.RootPart.Position).Magnitude / 0.5,
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.InOut
+    )
+    local tween = TweenService:Create(humanoid.RootPart, tweenInfo, {Position = newPosition})
 
-                    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
-                    tween:Play()
-
-                    wait(1)
-
-                    repeat
-                        wait()
-                        Player.Character.Humanoid:MoveTo(targetPosition)
-                        wait(1)
-                        VirtualInputManager:SendKeyEvent(true, "E", false, game)
-                        wait(1)
-                    until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(2.5)
+    spawn(function()
+        while Settings.AutoCollect do
+            wait()
+            pcall(
+                function()
+                    for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                        if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                            Player.Character.HumanoidRootPart.CFrame =
+                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 0)
+                            wait(1)
+                            repeat wait()
+                                tween:Play()
+                                tween.Completed:Wait()
+                            wait(1)
+                            VirtualInputManager:SendKeyEvent(true, "E", false, game) 
+				            wait(1)
+                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+                        end
+                    end
                 end
-            end
-        end)
-    end
-end)
-end)
+            )
+        end
+    end)
+
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
     Settings.CollectionItem = String
 end)
