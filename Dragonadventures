@@ -4,12 +4,6 @@ if not table.find(Table, game.PlaceId) then return end
 repeat
     wait()
 until game:IsLoaded()
-local get_thread_context = get_thread_context or getthreadcontext or getidentity or syn.get_thread_identity
-local get_thread_identity = get_thread_context
-local set_thread_context = set_thread_context or setthreadcontext or setidentity or syn.set_thread_identity
-for i,v in next, getconnections(LogService.MessageOut) do
-    v:Enable()
-end
 wait()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CoreGui = game:GetService("CoreGui")
