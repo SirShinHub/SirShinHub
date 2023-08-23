@@ -318,14 +318,6 @@ local Toggle1 = Section1:CreateToggle("Auto Christmas egg farm", Settings.AutoEg
         end
     end)
     
-    local function TweenCharacterTo(position)
-        local humanoidRootPart = Player.Character:WaitForChild("HumanoidRootPart")
-        local tweenInfo = TweenInfo.new((position - humanoidRootPart.Position).Magnitude / 16, Enum.EasingStyle.Linear)
-        local tween = game:GetService("TweenService"):Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(position)})
-        tween:Play()
-        tween.Completed:Wait()
-    end
-    
     spawn(function()
         while Settings.AutoEgg do
             wait()
@@ -456,6 +448,7 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
     Dropdown1:SetOption(tostring(1))
     end
 
+local TweenService = game:GetService("TweenService")
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
     local hitbox = Instance.new("Part")
@@ -479,31 +472,39 @@ local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
         end
     end)
 
-    spawn(function()
-        while Settings.AutoCollect do
-            wait()
-            pcall(
-                function()
-                    for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
-                        if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
-                            Player.Character.HumanoidRootPart.CFrame =
-                                v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(7, 5, 0)
-                            wait(1)
-                            repeat wait()
-                            Player.Character.Humanoid:MoveTo(
-                                v:FindFirstChildWhichIsA("BasePart").Position
-                            )
-			    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
-                            wait(1)
-                            VirtualInputManager:SendKeyEvent(true, "E", false, game) 
-				wait(1)
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
-                        end
-                    end
+spawn(function()
+    while Settings.AutoCollect do
+        wait()
+        pcall(function()
+            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+                         Player.Character.HumanoidRootPart.CFrame =
+			v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 10)
+					
+                    local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position Vector3.new(0, -10, 0)
+
+                    local humanoidRootPart = Player.Character.HumanoidRootPart
+                    local tweenInfo = TweenInfo.new((targetPosition - humanoidRootPart.Position).Magnitude / Humanoid.WalkSpeed)
+                    local tweenGoal = {}
+                    tweenGoal.Position = targetPosition
+
+                    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+                    tween:Play()
+
+                    wait(1)
+
+                    repeat
+                        wait()
+                        Player.Character.Humanoid:MoveTo(targetPosition)
+                        wait(1)
+                        VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                        wait(1)
+                    until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(2.5)
                 end
-            )
-        end
-    end)
+            end
+        end)
+    end
+end)
 end)
 
 local Dropdown1 = Section1:CreateDropdown("Collection Item", deku, function(String)
@@ -550,25 +551,38 @@ local Toggle1 = Section1:CreateToggle("Auto Egg", Settings.AutoEgg, function(Sta
         virtualInputManager:SendKeyEvent(true, "E", false, game)
     end
     
-    spawn(function()
-        while Settings.AutoEgg do
-            wait()
-            pcall(function()
-                local activeEggNodes = Workspace.Interactions.Nodes.Harvest.Eggs.ActiveNodes:GetChildren()
-                for i, v in pairs(activeEggNodes) do
-                    if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") then
-                        CollectEgg(v:FindFirstChildWhichIsA("BasePart").Position)
-                        
-                        wait(6) -- Wait after harvesting before moving to the next egg
-                        
-                        if not Settings.AutoEgg then
-                            break
-                        end
-                    end
+spawn(function()
+    while Settings.AutoCollect do
+        wait()
+        pcall(function()
+            for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
+					v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, -20, 10)
+					
+                    local targetPosition = v:FindFirstChildWhichIsA("BasePart").Position Vector3.new(0, -10, 0)
+
+                    local humanoidRootPart = Player.Character.HumanoidRootPart
+                    local tweenInfo = TweenInfo.new((targetPosition - humanoidRootPart.Position).Magnitude / Humanoid.WalkSpeed)
+                    local tweenGoal = {}
+                    tweenGoal.Position = targetPosition
+
+                    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+                    tween:Play()
+
+                    wait(1)
+
+                    repeat
+                        wait()
+                        Player.Character.Humanoid:MoveTo(targetPosition)
+                        game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Jump = true
+                        wait(1)
+                        VirtualInputManager:SendKeyEvent(true, "E", false, game)
+                        wait(1)
+                    until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(3)
                 end
-            end)
-        end
-    end)
+            end
+        end)
+    end
 end)
 
 Toggle1:AddToolTip("Teleports to Eggs")
