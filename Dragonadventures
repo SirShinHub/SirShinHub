@@ -471,7 +471,6 @@ local Toggle1 = Section1:CreateToggle("Alchemy AutoFarm", Settings.Alchemy, func
     end)
     Dropdown1:SetOption(tostring(1))
     end
-
 local Toggle1 = Section1:CreateToggle("Autocollect", nil, function(State)
     Settings.AutoCollect = State
 	pcall(
@@ -532,7 +531,7 @@ end)
                             wait(1)
                             VirtualInputManager:SendKeyEvent(true, "E", false, game) 
 				            wait(1)
-                            until v == nil or Settings.AutoCollect == false or v:FindFirstChild("Harvested").Value == true and wait(2)
+                            until v == nil or Settings.AutoCollect == false or (v:FindFirstChild("Harvested") and v:FindFirstChild("Harvested").Value == true) and wait(2.5)
                         end
                     end
                 end
