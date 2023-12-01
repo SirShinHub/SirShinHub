@@ -496,7 +496,7 @@ while Settings.AutoCollect do
             for i, v in pairs(Workspace.Interactions.Nodes.Harvest[Settings.CollectionItem].ActiveNodes:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChildWhichIsA("BasePart") and Settings.AutoCollect then
                     Player.Character.HumanoidRootPart.CFrame =
-                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(0, 5, 0)
+                        v:FindFirstChildWhichIsA("BasePart").CFrame * CFrame.new(7, 5, 0)
                     wait(1)
                     repeat wait()
                     Player.Character.Humanoid:MoveTo(
